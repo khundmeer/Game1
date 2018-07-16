@@ -32,6 +32,7 @@ Side Scrolling (objects moving)           0
 Git Hub (ssh)                             1
 
 7/17/2018 TUESDAY
+Do gimp stuff with the image              0
 Collecting documents(collision)           0
 Destroying objects upon collision         0
 Score +/- based on the object             0
