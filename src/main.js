@@ -30,7 +30,11 @@ var Game =
     High_Score: 0
 }
 
+var CollisionDetect = 
+{
 
+
+}
 
 //This links pixi to our JS file
 let type = "WebGL"
@@ -49,15 +53,15 @@ var h = screen.height;
 
 //Main Screen of the game
 var AppWidth = 500;
-var AppHeight = 100;
+var AppHeight = 200;
 //window.alert(h);
 
 let app = new PIXI.Application({width: AppWidth, height: AppHeight, antialias: true});
 app.renderer.backgroundColor = 0x000000; //Color
-var stage = new PIXI.Container();
+
 
 document.body.appendChild(app.view);
-console.log(app.width);
+//console.log(app.width);
 
 //app.renderer.view.style.position = 200;
 
@@ -90,18 +94,36 @@ app.view.style.top = MiddleTop;
 app.view.style.position = "relative";
 app.renderer.autoResize = true;
 
-scaleToWindow(app.renderer.view);
-
+//scaleToWindow(app.renderer.view);
+var GameObjs = [];
+//-----------------------------------------------------------------------
 //Creating a rectangle below.
-let rectangle = new Graphics();
+let rectangle = new PIXI.Graphics();
 rectangle.beginFill(0x66CCFF);
 rectangle.lineStyle(4, 0xFF3300, 1);
-rectangle.drawRect(MiddleLeft, MiddleTop, 10, 10);
+rectangle.drawRect(0, 0, 33, 33);
 //rectangle.drawRect(   x    ,   y      , width, height);
 rectangle.endFill();
 app.stage.addChild(rectangle);
-
 //Creating a rectangle above.
+//-----------------------------------------------------------------------
+
+function setup() {
+
+    //Start the game loop by adding the `gameLoop` function to
+    //Pixi's `ticker` and providing it with a `delta` argument.
+    app.ticker.add(delta => gameLoop(delta));
+  }
+  
+  function gameLoop(delta){
+  
+    //Move the cat 1 pixel 
+    rectangle.x += 1;
+  }
+
+setup();
+
+
 
 /*
 // This was suppose to
