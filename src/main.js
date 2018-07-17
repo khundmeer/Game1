@@ -30,6 +30,8 @@ var Game =
     High_Score: 0
 }
 
+
+
 //This links pixi to our JS file
 let type = "WebGL"
 if(!PIXI.utils.isWebGLSupported()){
@@ -52,7 +54,7 @@ var AppHeight = 100;
 
 let app = new PIXI.Application({width: AppWidth, height: AppHeight, antialias: true});
 app.renderer.backgroundColor = 0x000000; //Color
-
+var stage = new PIXI.Container();
 
 document.body.appendChild(app.view);
 console.log(app.width);
@@ -75,25 +77,39 @@ console.log(app.width);
 
 //Add the canvas that Pixi automatically created for you to the HTML document
 
-app.view.style.left = (w/2)-(AppWidth/2);
-app.view.style.top = (h/2)-(AppHeight-(AppHeight/2));
+var MiddleLeft = (w/2)-(AppWidth/2);
+var MiddleTop = (h/2)-(AppHeight-(AppHeight/2));
+
+app.view.style.left = MiddleLeft;
+app.view.style.top = MiddleTop;
 
 //app.view.style.marginTop = '-('+(AppHeight/2)+')px';
 //app.view.style.top = '50%';
 //app.view.style.y = (h/2);
 //document.window.innerwidth='(w/2)-300';
+app.view.style.position = "relative";
+app.renderer.autoResize = true;
 
+scaleToWindow(app.renderer.view);
 
+//Creating a rectangle below.
+let rectangle = new Graphics();
+rectangle.beginFill(0x66CCFF);
+rectangle.lineStyle(4, 0xFF3300, 1);
+rectangle.drawRect(MiddleLeft, MiddleTop, 10, 10);
+//rectangle.drawRect(   x    ,   y      , width, height);
+rectangle.endFill();
+app.stage.addChild(rectangle);
+
+//Creating a rectangle above.
+
+/*
+// This was suppose to
 app.renderer.view.style.position = "absolute";
 app.renderer.view.style.display = "block";
 app.renderer.autoResize = true;
-//app.renderer.resize(window.innerWidth, window.innerHeight);
-
-
-
-//app.view.style.position = "relative";
-//app.renderer.autoResize = true;
-
+app.renderer.resize(window.innerWidth, window.innerHeight);
+*/
 
 
 
