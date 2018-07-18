@@ -31,7 +31,16 @@ var Game =
     //var state 
 }
 
+let type = "WebGL"
+if(!PIXI.utils.isWebGLSupported()){
+    type = "canvas"
+}
 
+
+
+/**This is the collision detection object.
+ * It contains functions that detect collision depending on the object(shape)
+ **/
 var CollisionDetect = 
 {
     hitRectangle: function (r1, r2) {
@@ -85,19 +94,54 @@ var CollisionDetect =
         return hit;
       }
 }
-
-
-//This links pixi to our JS file
-let type = "WebGL"
-if(!PIXI.utils.isWebGLSupported()){
-    type = "canvas"
+/**This is the keyboard function for handling the keyboard events */
+function keyboard(keyCode) 
+{
+    let key = {};//constructor
+    key.code = keyCode; 
+    key.isDown = false;
+    key.isUp = true;
+    key.press = undefined;
+    key.release = undefined;
+    //The `downHandler`
+    key.downHandler = event => {
+      if (event.keyCode === key.code) {
+        if (key.isUp && key.press) key.press();
+        key.isDown = true;
+        key.isUp = false;
+      }
+      event.preventDefault();
+    };
+  
+    //The `upHandler`
+    key.upHandler = event => {
+      if (event.keyCode === key.code) {
+        if (key.isDown && key.release) key.release();
+        key.isDown = false;
+        key.isUp = true;
+      }
+      event.preventDefault();
+    };
+  
+    //Attach event listeners
+    window.addEventListener(
+      "keydown", key.downHandler.bind(key), false
+    );
+    window.addEventListener(
+      "keyup", key.upHandler.bind(key), false
+    );
+    return key;
 }
+
+
+
+//---------------------------------------------------------------------------------------
+  //This links pixi to our JS file
+
 
 PIXI.utils.sayHello(type)
 var w = screen.width;
 var h = screen.height;
-
-
 
 //window.alert(h);
 //console.log(h);
@@ -116,11 +160,11 @@ document.body.appendChild(app.view);
 
 //app.renderer.view.style.position = 200;
 
-//let app = new PIXI.Application({width: 500, height: 50});
+//let app = new PIXI.Applirectangleion({width: 500, height: 50});
 //app.view.style.left = 500;
 //new PIXI.rectangle(10, 10, 10, 10);
 //app.stage
-//find out how to get the width and height of the window ????????????????????????????????????????????
+
 
 //let sprite = new PIXI.Sprite.fromImage('assets/image.png');
 
@@ -169,48 +213,115 @@ rectangle2.x = AppWidth;
 
 app.stage.addChild(rectangle2);
 
-
-
-
 //-----------------------------------------------------------------------
 
 function setup(hello) 
 {
     this.id = hello;
+
+
+    //Adding all the keys
+      let left = keyboard(37),
+        up = keyboard(38),
+        right = keyboard(39),
+        down = keyboard(40);
+    
+    left.press = () => {
+        //Change the rectangle's velocity when the key is pressed
+        rectangle.vx = -5;
+        rectangle.vy = 0;
+      };
+      
+      //Left arrow key `release` method
+      left.release = () => {
+        //If the left arrow has been released, and the right arrow isn't down,
+        //and the rectangle isn't moving vertically:
+        //Stop the rectangle
+        if (!right.isDown && rectangle.vy === 0) {
+          rectangle.vx = 0;
+        }
+      };
+    
+      //Up
+      up.press = () => {
+        rectangle.vy = -5;
+        rectangle.vx = 0;
+      };
+      up.release = () => {
+        if (!down.isDown && rectangle.vx === 0) {
+          rectangle.vy = 0;
+        }
+      };
+    
+      //Right
+      right.press = () => {
+        rectangle.vx = 5;
+        rectangle.vy = 0;
+      };
+      right.release = () => {
+        if (!left.isDown && rectangle.vy === 0) {
+          rectangle.vx = 0;
+        }
+      };
+    
+      //Down
+      down.press = () => {
+        rectangle.vy = 5;
+        rectangle.vx = 0;
+      };
+      down.release = () => {
+        if (!up.isDown && rectangle.vx === 0) {
+          rectangle.vy = 0;
+        }
+      };
+
+
+      state = play;
+
+    //Above adding all the keys
+    
+    
+    
+    
     //Start the game loop by adding the `gameLoop` function to
     //Pixi's `ticker` and providing it with a `delta` argument.
     app.ticker.add(delta => gameLoop(delta));
 }
-  
-  function gameLoop(delta){
-  
-    //Move the cat 1 pixel 
+
+
+
+
+
+
+function gameLoop(delta)
+{
+    //Move the rectangle 1 pixel 
     rectangle2.x -= 1;
     
     if (CollisionDetect.hitRectangle(rectangle,rectangle2))
-        {
+    {
            console.log("We have a hit") ;
             app.stage.removeChild(rectangle);
             app.stage.removeChild(rectangle2);
-        
-        }
-    //------------------------------------------------------------------------------------------I stopped here after destroying objects upon collision.
+    }   
     
+    state(delta);
     //Game.update(delta);
+}
 
-    //if(hitTestRectangle(rectangle,rectangle2))
-   // {
-   //     window.alert("Collision is there");
-//}
+function play(delta) {
 
-
+    //Use the cat's velocity to make it move
+    rectangle.x += rectangle.vx;
+    rectangle.y += rectangle.vy
   }
+
 
 var setupObj = new setup('hello world');
 console.log(setupObj);
 
 
-
+//------------------------------------------------------------------------
 /*
 // This was suppose to
 app.renderer.view.style.position = "absolute";
@@ -219,10 +330,8 @@ app.renderer.autoResize = true;
 app.renderer.resize(window.innerWidth, window.innerHeight);
 */
 
-
-
-//resizing the application window
+//resizing the applirectangleion window
 //app.renderer.resize(512, 512);
 
-//If I want to change the background color of the application
+//If I want to change the background color of the applirectangleion
 //app.renderer.backgroundColor = 0x061639;
