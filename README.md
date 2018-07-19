@@ -5,19 +5,19 @@ The game is a side scroller game in which a character named "Globie" embarks on 
 
 
 
-Game Object
-    functions:
-        Update
-        Start
-        End
+### Game Object
+* functions:
+	* Update
+	* Start
+	* End
 
-Side Scroller
-    High Score
-    Difficulty(slow->fast)
-    Jump(only control/input)
-    Active score/time
-    One life game
-    24 fps
+### Side Scroller
+* High Score
+* Difficulty(slow->fast)
+* Jump(only control/input)
+* Active score/time
+* One life game
+* 24 fps
 
 
 Visa Types / Documents for them / Avoiders for them (we will need a list of this)
@@ -25,27 +25,42 @@ Visa Types / Documents for them / Avoiders for them (we will need a list of this
 
 
 
+# Schedule
 
-7/16/2018 MONDAY                        Status
-Do Basic Drawing                          0
-Side Scrolling (objects moving)           0
-Git Hub (ssh)                             1
+## 7/16/2018 MONDAY   
+| Tasks | Status |
+| -------- | -------:|
+| Do Basic Drawing                      |    0         |
+| Side Scrolling (objects moving)       |    0         |
+| Git Hub (ssh)                         |    1         |
 
-7/17/2018 TUESDAY
-Do gimp stuff with the image              0
-Collecting documents(collision)           0
-Destroying objects upon collision         0
-Score +/- based on the object             0
 
-7/18    WEDNESDAY
-Jump
-Obj.Dif hits<y>
+## 7/17/2018 TUESDAY
+| Tasks | Status |
+| -------- | -------:|
+| Do gimp stuff with the image          |    0         |
+| Collecting documents(collision)       |    0         |
+| Destroying objects upon collision     |    0         |
+| Score +/- based on the object         |    0         |
 
-7/19   THURSDAY
-Game Play Cycle
-Start End
-Score Saving
-    Saving HS.
 
-7/20 FRI
-Done
+## 7/18    WEDNESDAY
+| Tasks | Status |
+| -------- | -------:|
+| Jump                                  |    0         |
+| Obj.Dif hits<y>                       |    0         |
+
+
+## 7/19   THURSDAY   
+| Tasks | Status |
+| -------- | -------:|
+|  Game Play Cycle                       |     0        |
+|  Start End                             |     0        |
+|  Score Saving                          |     0        |
+|      Saving HS.                        |     0        |
+
+
+## 7/20 FRI  
+| Tasks | Status |
+| -------- | -------:|
+| Project Complete                       |     0        |
