@@ -1,3 +1,10 @@
+let type = "WebGL"
+if(!PIXI.utils.isWebGLSupported()){
+    type = "canvas"
+}
+
+
+
 /*
 var Game =
 { 
@@ -164,10 +171,7 @@ var Game =
       this.Cur_HS = this.Cur_HS;
     }
     return this.Cur_HS;
-  
-  }
-
-  play: function (delta) 
+    play: function (delta) 
 {
     //rectangle.vx = 1;
     //rectangle.vy = 1;
@@ -188,12 +192,10 @@ var Game =
   
   //var state 
 };
+  }
+
+
 */
-
-
-
-
-
 
 
 
@@ -203,17 +205,24 @@ var h = screen.height;
 var AppWidth = 600;
 var AppHeight = 400;
 
+
 var Rects = [];
-function CreateRect(name, yPos)
+function CreateRect(Name, yPos, speed)
 {
-  let name = new PIXI.Graphics();
-  name.beginFill(0x66CCFF);
-  name.lineStyle(4, 0xFF3300, 1);
-  name.drawRect(0, 0, 33, 33);
-  name.endFill();
-  name.x = AppWidth;
-  name.y = yPos;
-  Rects.push(name);
+  let newRec = new PIXI.Graphics();
+  newRec.beginFill(0x66CCFF);
+  newRec.lineStyle(4, 0xFF3300, 1);
+  newRec.drawRect(0, 0, 33, 33);
+  newRec.endFill();
+  newRec.x = AppWidth;
+  newRec.y = yPos;
+  newRec.name = Name;
+  newRec.vx = speed;
+  
+  //Make this a function where it moves stuff
+  newRec.update = function(dt) {
+  newRec.x -= newRec.vx;
+  }
   //Creating a rectangle below.
   // let rectangle = new PIXI.Graphics();
   // rectangle.beginFill(0x66CCFF);
@@ -223,12 +232,12 @@ function CreateRect(name, yPos)
   // //rectangle.drawRect(   x    ,   y      , width, height);
   // rectangle.endFill();
   //rectangle.x = AppWidth;
-  //return name;
+  return newRec;
 }
 
 
-// var nam = "rectangle5";
-// CreateRect(nam, 132);
+var newRect = new CreateRect("rectangle5", 132);
+Rects.push(newRect);
 
 
 
@@ -277,10 +286,7 @@ function CreateRect(name, yPos)
  **/
 
 
-let type = "WebGL"
-if(!PIXI.utils.isWebGLSupported()){
-    type = "canvas"
-}
+
 
 var CollisionDetect = 
 {
@@ -392,13 +398,13 @@ app.renderer.autoResize = true;
 
 //-----------------------------------------------------------------------
 //Creating a rectangle below.
-let rectangle = new PIXI.Graphics();
-rectangle.beginFill(0x66CCFF);
-rectangle.lineStyle(4, 0xFF3300, 1);
-rectangle.drawRect(0, 0, 33, 33);
+let player = new PIXI.Graphics();
+player.beginFill(0x66CCFF);
+player.lineStyle(4, 0xFF3300, 1);
+player.drawRect(0, 0, 33, 33);
 
 //rectangle.drawRect(   x    ,   y      , width, height);
-rectangle.endFill();
+player.endFill();
 
 //Creating a rectangle above.
 
@@ -466,7 +472,7 @@ let message = new PIXI.Text("Welcome to My Game!", style);
 
 
 
-var GameObjects = [rectangle, rectangle1, rectangle2, rectangle3, rectangle4];
+var GameObjects = [player, rectangle1, rectangle2, rectangle3, rectangle4];
 
 // for (i = 0; i<GameObjects.length; i++)
 // {
@@ -504,9 +510,9 @@ function setup(hello)
 {
     this.id = hello;
 
-      rectangle.y = 96;
-      rectangle.vx = 0;
-      rectangle.vy = 0;
+      player.y = 96;
+      player.vx = 0;
+      player.vy = 0;
 
     //Adding all the keys
       let left = keyboard(37),
@@ -516,8 +522,8 @@ function setup(hello)
     
     left.press = () => {
         //Change the rectangle's velocity when the key is pressed
-        rectangle.vx = -5;
-        rectangle.vy = 0;
+        player.vx = -5;
+        player.vy = 0;
       };
       
       //Left arrow key `release` method
@@ -525,41 +531,41 @@ function setup(hello)
         //If the left arrow has been released, and the right arrow isn't down,
         //and the rectangle isn't moving vertically:
         //Stop the rectangle
-        if (!right.isDown && rectangle.vy === 0) {
-          rectangle.vx = 0;
+        if (!right.isDown && player.vy === 0) {
+          player.vx = 0;
         }
       };
     
       //Up
       up.press = () => {
-        rectangle.vy = -5;
-        rectangle.vx = 0;
+        player.vy = -5;
+        player.vx = 0;
       };
       up.release = () => {
-        if (!down.isDown && rectangle.vx === 0) {
-          rectangle.vy = 0;
+        if (!down.isDown && player.vx === 0) {
+          player.vy = 0;
         }
       };
     
       //Right
       right.press = () => {
-        rectangle.vx = 5;
-        rectangle.vy = 0;
+        player.vx = 5;
+        player.vy = 0;
       };
       right.release = () => {
-        if (!left.isDown && rectangle.vy === 0) {
-          rectangle.vx = 0;
+        if (!left.isDown && player.vy === 0) {
+          player.vx = 0;
         }
       };
     
       //Down
       down.press = () => {
-        rectangle.vy = 5;
-        rectangle.vx = 0;
+        player.vy = 5;
+        player.vx = 0;
       };
       down.release = () => {
-        if (!up.isDown && rectangle.vx === 0) {
-          rectangle.vy = 0;
+        if (!up.isDown && player.vx === 0) {
+          player.vy = 0;
         }
       };
 
@@ -595,7 +601,7 @@ function gameLoop(delta)
       for (i = 0; i<GameObjects.length; i++)
       {
         app.stage.addChild(GameObjects[i]);
-        // app.stage.addChild(Rects[0]);
+        app.stage.addChild(Rects[0]);
       }
     }
 
@@ -618,29 +624,29 @@ function gameLoop(delta)
     */
     
     
-    if (CollisionDetect.hitRectangle(rectangle,rectangle1))
+    if (CollisionDetect.hitRectangle(player,rectangle1))
     {
            console.log("We have a hit") ;
-            app.stage.removeChild(rectangle);
+            app.stage.removeChild(player);
             app.stage.removeChild(rectangle1);
     }   
-    if (CollisionDetect.hitRectangle(rectangle,rectangle2))
+    if (CollisionDetect.hitRectangle(player,rectangle2))
     {
            console.log("We have a hit") ;
-            app.stage.removeChild(rectangle);
+            app.stage.removeChild(player);
             app.stage.removeChild(rectangle2);
     }
-    if (CollisionDetect.hitRectangle(rectangle,rectangle3))
+    if (CollisionDetect.hitRectangle(player,rectangle3))
     {
            console.log("We have a hit") ;
-            app.stage.removeChild(rectangle);
+            app.stage.removeChild(player);
             app.stage.removeChild(rectangle3);
             // console.log(delta);
     }
-    if (CollisionDetect.hitRectangle(rectangle,rectangle4))
+    if (CollisionDetect.hitRectangle(player,rectangle4))
     {
            console.log("We have a hit") ;
-            app.stage.removeChild(rectangle);
+            app.stage.removeChild(player);
             app.stage.removeChild(rectangle4);
     }
     state(delta);
@@ -653,12 +659,17 @@ function play(delta)
     //rectangle.vy = 1;
     //Move the rectangle 1 pixel 
     if (Gt>500 && Gt<1200){
+
+
+      GameObjects.forEach(rect => {
+        rect.update(delta);
+      });
       rectangle1.x -= 3;
     rectangle2.x -= 2;
     rectangle3.x -= 4;
     rectangle4.x -= 5;
-    rectangle.x += rectangle.vx;
-    rectangle.y += rectangle.vy;
+    player.x += player.vx;
+    player.y += player.vy;
 
     }
     if (Gt>1200 && Gt<1500)
