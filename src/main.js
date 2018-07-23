@@ -1,55 +1,256 @@
 /*
 var Game =
 { 
+  GameTime: 0,
+
+  CurrentScore: function()
+  {
+      this.current_score = 0;
+
+  },
+  current_score: CurrentScore(),
+  Cur_HS: HighScoreCalc(),
+  //Prev_HS:
+  
+  setup: function (hello) 
+        {
+          this.id = hello;
+
+            rectangle.y = 96;
+            rectangle.vx = 0;
+            rectangle.vy = 0;
+
+          //Adding all the keys
+            let left = keyboard(37),
+              up = keyboard(38),
+              right = keyboard(39),
+              down = keyboard(40);
+          
+          left.press = () => {
+              //Change the rectangle's velocity when the key is pressed
+              rectangle.vx = -5;
+              rectangle.vy = 0;
+            };
+            
+            //Left arrow key `release` method
+            left.release = () => {
+              //If the left arrow has been released, and the right arrow isn't down,
+              //and the rectangle isn't moving vertically:
+              //Stop the rectangle
+              if (!right.isDown && rectangle.vy === 0) {
+                rectangle.vx = 0;
+              }
+            };
+          
+            //Up
+            up.press = () => {
+              rectangle.vy = -5;
+              rectangle.vx = 0;
+            };
+            up.release = () => {
+              if (!down.isDown && rectangle.vx === 0) {
+                rectangle.vy = 0;
+              }
+            };
+          
+            //Right
+            right.press = () => {
+              rectangle.vx = 5;
+              rectangle.vy = 0;
+            };
+            right.release = () => {
+              if (!left.isDown && rectangle.vy === 0) {
+                rectangle.vx = 0;
+              }
+            };
+          
+            //Down
+            down.press = () => {
+              rectangle.vy = 5;
+              rectangle.vx = 0;
+            };
+            down.release = () => {
+              if (!up.isDown && rectangle.vx === 0) {
+                rectangle.vy = 0;
+              }
+            };
+
+
+            state = play;
+
+          //Above adding all the keys
+          
+          //Start the game loop by adding the `gameLoop` function to
+          //Pixi's `ticker` and providing it with a `delta` argument.
+          app.ticker.add(delta => gameLoop(delta));
+        },
+  
+  update: function(delta)
+        {
+          GameTime += delta;
+          
+          // player1.score--;
+          // player1.update(delta);
+          //gameLoop.time += delta;
+          console.log(gameLoop.time);
+          if (5 && GameLoop.time<7)
+          {
+            app.stage.addChild(message);
+      
+            message.position.set((AppWidth/2 -(message.width/2)),(AppHeight/2 -(message.height/2 - message.height/2)));
+            //console.log(gameLoop.time);
+          }
+          //Move the rectangle 1 pixel 
+          
+          //console.log("We are in the gameloop");
+          /*
+          for(i = 0; i<GameObjects.length;i++)
+          {
+            if (CollisionDetect.hitRectangle(GameObjects[0],GameObjects[i+1]))
+            {
+                  console.log("We have a hit") ;
+                  app.stage.removeChild(GameObjects[0]);
+                  app.stage.removeChild(GameObjects[i+1]);
+            }  
+          }
+          
+          
+          
+          if (CollisionDetect.hitRectangle(rectangle,rectangle1))
+          {
+                  console.log("We have a hit") ;
+                  app.stage.removeChild(rectangle);
+                  app.stage.removeChild(rectangle1);
+          }   
+          if (CollisionDetect.hitRectangle(rectangle,rectangle2))
+          {
+                  console.log("We have a hit") ;
+                  app.stage.removeChild(rectangle);
+                  app.stage.removeChild(rectangle2);
+          }
+          if (CollisionDetect.hitRectangle(rectangle,rectangle3))
+          {
+                  console.log("We have a hit") ;
+                  app.stage.removeChild(rectangle);
+                  app.stage.removeChild(rectangle3);
+                  // console.log(delta);
+          }
+          if (CollisionDetect.hitRectangle(rectangle,rectangle4))
+          {
+                  console.log("We have a hit") ;
+                  app.stage.removeChild(rectangle);
+                  app.stage.removeChild(rectangle4);
+          }
+          state(delta);
+          //Game.update(delta);
+        },
+            
+
   
   
-    CurrentScore: function()
-    {
-        this.current_score = 0;
-
-    },
-    current_score: CurrentScore(),
-    Cur_HS: HighScoreCalc(),
-    //Prev_HS:
-    update: function()
-        {
-
-
-        },
-
-
-    start: function()
-        {
-
-        },
-    end: function ()
-    {
-
-    },
-    
-    /**Keep track of current score
-     * @param 
-     * @returns current score,
-     
+  /**Keep track of current score
+   * @param 
+   * @returns current score,
    
+  
 
 
-    //Checks if the currentscore has surpassed the previous highscore.
-    HighScoreCalc: function()
+  //Checks if the currentscore has surpassed the previous highscore.
+  HighScoreCalc: function()
+  {
+    Prev_HS = Cur_HS;
+    if (this.current_score>this.Cur_HS)
     {
-      Prev_HS = Cur_HS;
-      if (this.current_score>this.Cur_HS)
-      {
-        this.Cur_HS = this.Cur_HS;
-      }
-      return this.Cur_HS;
-    
+      this.Cur_HS = this.Cur_HS;
     }
+    return this.Cur_HS;
+  
+  }
 
+  play: function (delta) 
+{
+    //rectangle.vx = 1;
+    //rectangle.vy = 1;
+    //Move the rectangle 1 pixel 
     
-    //var state 
+    rectangle1.x -= 3;
+    rectangle2.x -= 2;
+    rectangle3.x -= 4;
+    rectangle4.x -= 5;
+
+
+
+
+    rectangle.x += rectangle.vx;
+    rectangle.y += rectangle.vy;
+
+}
+  
+  //var state 
 };
 */
+
+
+
+
+
+
+
+
+var w = screen.width;
+var h = screen.height;
+//Main Screen of the game
+var AppWidth = 600;
+var AppHeight = 400;
+
+var Rects = [];
+function CreateRect(name, yPos)
+{
+  let name = new PIXI.Graphics();
+  name.beginFill(0x66CCFF);
+  name.lineStyle(4, 0xFF3300, 1);
+  name.drawRect(0, 0, 33, 33);
+  name.endFill();
+  name.x = AppWidth;
+  name.y = yPos;
+  Rects.push(name);
+  //Creating a rectangle below.
+  // let rectangle = new PIXI.Graphics();
+  // rectangle.beginFill(0x66CCFF);
+  // rectangle.lineStyle(4, 0xFF3300, 1);
+  // rectangle.drawRect(0, 0, 33, 33);
+
+  // //rectangle.drawRect(   x    ,   y      , width, height);
+  // rectangle.endFill();
+  //rectangle.x = AppWidth;
+  //return name;
+}
+
+
+// var nam = "rectangle5";
+// CreateRect(nam, 132);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // function update(delta)
 // {
@@ -69,11 +270,7 @@ var Game =
 // //score is displayed
 // }
 
-var w = screen.width;
-var h = screen.height;
-//Main Screen of the game
-var AppWidth = 600;
-var AppHeight = 400;
+
 
 /**This is the collision detection object.
  * It contains functions that detect collision depending on the object(shape)
@@ -261,9 +458,9 @@ let style = new PIXI.TextStyle({
   dropShadowDistance: 6,
 });
 let message = new PIXI.Text("Welcome to My Game!", style);
-// app.stage.addChild(message);
+ app.stage.addChild(message);
 
-// message.position.set((AppWidth/2 -(message.width/2)),(AppHeight/2 -(message.height/2 - message.height/2)));
+//  message.position.set((AppWidth/2 -(message.width/2)),(AppHeight/2 -(message.height/2 - message.height/2)));
 //console.log(message.height);
 //------------------------------------------------------------------------------------
 
@@ -271,10 +468,10 @@ let message = new PIXI.Text("Welcome to My Game!", style);
 
 var GameObjects = [rectangle, rectangle1, rectangle2, rectangle3, rectangle4];
 
-for (i = 0; i<GameObjects.length; i++)
-{
-  app.stage.addChild(GameObjects[i]);
-}
+// for (i = 0; i<GameObjects.length; i++)
+// {
+//   app.stage.addChild(GameObjects[i]);
+// }
 
 /*
 app.stage.addChild(rectangle);
@@ -285,7 +482,24 @@ app.stage.addChild(rectangle4);
 */
 
 //-----------------------------------------------------------------------
+/*
+function Player() 
+{
+  let player = {};
+  player.score = 10;
 
+  player.update = function(dt) {
+    //dfjkdfd
+  }
+
+  return player;
+}
+
+var player1 = new Player();
+player1.score;
+*/
+
+//Moved to GameObj
 function setup(hello) 
 {
     this.id = hello;
@@ -359,20 +573,38 @@ function setup(hello)
     app.ticker.add(delta => gameLoop(delta));
 }
 
+var Gt = 0;
+//Moved to GameObj
 function gameLoop(delta)
 {
-    gameLoop.time += delta;
-    console.log(gameLoop.time);
-    if (gameLoop.time>5 && GameLoop.time<7)
+    Gt += delta;
+    // player1.score--;
+    // player1.update(delta);
+    //gameLoop.time += delta;
+    console.log(Gt);
+    if (Gt>200)
     {
-      app.stage.addChild(message);
-
-      message.position.set((AppWidth/2 -(message.width/2)),(AppHeight/2 -(message.height/2 - message.height/2)));
-      console.log(gameLoop.time);
+      // app.stage.addChild(message);
+      app.stage.removeChild(message)
+      //message.position.set((AppWidth/2 -(message.width/2)),(AppHeight/2 -(message.height/2 - message.height/2)));
+      console.log(Gt);
     }
+
+    if(Gt>200 && Gt < 250)
+    {
+      for (i = 0; i<GameObjects.length; i++)
+      {
+        app.stage.addChild(GameObjects[i]);
+        // app.stage.addChild(Rects[0]);
+      }
+    }
+
+
     //Move the rectangle 1 pixel 
     
     //console.log("We are in the gameloop");
+    
+    
     /*
     for(i = 0; i<GameObjects.length;i++)
     {
@@ -415,22 +647,49 @@ function gameLoop(delta)
     //Game.update(delta);
 }
 
-
 function play(delta) 
 {
     //rectangle.vx = 1;
     //rectangle.vy = 1;
     //Move the rectangle 1 pixel 
-    rectangle1.x -= 3;
+    if (Gt>500 && Gt<1200){
+      rectangle1.x -= 3;
     rectangle2.x -= 2;
     rectangle3.x -= 4;
     rectangle4.x -= 5;
     rectangle.x += rectangle.vx;
     rectangle.y += rectangle.vy;
 
+    }
+    if (Gt>1200 && Gt<1500)
+    {
+
+    }
 }
 
 var setupObj = new setup('hello world');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //---------------------------------------------------------------------------------------
 //Below checks if WebGL supported.
