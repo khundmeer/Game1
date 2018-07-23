@@ -3,21 +3,120 @@ if(!PIXI.utils.isWebGLSupported()){
     type = "canvas"
 }
 
-
+PIXI.utils.sayHello(type)
 
 /*
 var Game =
 { 
+  
+  //Game time since start
   GameTime: 0,
+  
+  //Width of the screen, perhaps should be window.width
+  w : screen.width,
+  h : screen.height,
+  //Main Screen of the game
+  AppWidth = 600,
+  AppHeight = 400,
+  
+  //Array that stores Game and Text Objects
+  GameObjects : [],
+  TextObjects : [],
+  
+  //Current and High Score
+  CurrentScore : 0,
+  HighScore : 0,
 
-  CurrentScore: function()
+  keyboard: function (keyCode) 
   {
-      this.current_score = 0;
+      let key = {};//constructor
+      key.code = keyCode; 
+      key.isDown = false;
+      key.isUp = true;
+      key.press = undefined;
+      key.release = undefined;
+      //The `downHandler`
+      key.downHandler = event => {
+        if (event.keyCode === key.code) {
+          if (key.isUp && key.press) key.press();
+          key.isDown = true;
+          key.isUp = false;
+        }
+        event.preventDefault();
+      };
+    
+      //The `upHandler`
+      key.upHandler = event => {
+        if (event.keyCode === key.code) {
+          if (key.isDown && key.release) key.release();
+          key.isDown = false;
+          key.isUp = true;
+        }
+        event.preventDefault();
+      };
+    
+      //Attach event listeners
+      window.addEventListener(
+        "keydown", key.downHandler.bind(key), false
+      );
+      window.addEventListener(
+        "keyup", key.upHandler.bind(key), false
+      );
+      return key;
+  }
+
+  start: function ()
+  {
+    //Creating the screen of the application
+    let app = new PIXI.Application({width: AppWidth, height: AppHeight, antialias: true});
+    app.renderer.backgroundColor = 0x000000; //Color
+
+    document.body.appendChild(app.view);
+
+    var MiddleLeft = (w/2)-(AppWidth/2);
+    var MiddleTop = (h/2)-(AppHeight-(AppHeight/2));
+
+    app.view.style.left = MiddleLeft;
+    app.view.style.top = MiddleTop;
+    app.view.style.position = "relative";
+    app.renderer.autoResize = true;
+    //------------------------------------------------------------------------
+
+    //Create Welcome to my game text
+    let style = new PIXI.TextStyle(
+      {
+        fontFamily: "Arial",
+        fontSize: 36,
+        fill: "white",
+        stroke: '#ff3300',
+        strokeThickness: 4,
+        dropShadow: true,
+        dropShadowColor: "#000000",
+        dropShadowBlur: 4,
+        dropShadowAngle: Math.PI / 6,
+        dropShadowDistance: 6,
+      });
+      
+      let message = new PIXI.Text("Welcome to My Game!", style);
+      app.stage.addChild(message);
+
+      //  message.position.set((AppWidth/2 -(message.width/2)),(AppHeight/2 -(message.height/2 - message.height/2)));
+      //console.log(message.height);
+
+      //------------------------------------------------------------------------
+
+      
+
+  }
+
+  CurrentScore: function(delta)
+  {
+    
+    
+    this.current_score = 0;
 
   },
-  current_score: CurrentScore(),
-  Cur_HS: HighScoreCalc(),
-  //Prev_HS:
+
   
   setup: function (hello) 
         {
@@ -163,15 +262,18 @@ var Game =
 
 
   //Checks if the currentscore has surpassed the previous highscore.
-  HighScoreCalc: function()
+  HighScoreCalc: function(current)
   {
-    Prev_HS = Cur_HS;
-    if (this.current_score>this.Cur_HS)
+    Prev_HS = this.Cur_HS;
+    if (current>this.Cur_HS)
     {
-      this.Cur_HS = this.Cur_HS;
+      this.Cur_HS = current;
     }
     return this.Cur_HS;
-    play: function (delta) 
+  }
+
+
+  play: function (delta) 
 {
     //rectangle.vx = 1;
     //rectangle.vy = 1;
@@ -190,104 +292,18 @@ var Game =
 
 }
   
-  //var state 
+
 };
-  }
 
 
 */
 
 
 
-var w = screen.width;
-var h = screen.height;
-//Main Screen of the game
-var AppWidth = 600;
-var AppHeight = 400;
-
-
-var Rects = [];
-function CreateRect(Name, yPos, speed)
-{
-  let newRec = new PIXI.Graphics();
-  newRec.beginFill(0x66CCFF);
-  newRec.lineStyle(4, 0xFF3300, 1);
-  newRec.drawRect(0, 0, 33, 33);
-  newRec.endFill();
-  newRec.x = AppWidth;
-  newRec.y = yPos;
-  newRec.name = Name;
-  newRec.vx = speed;
-  
-  //Make this a function where it moves stuff
-  newRec.update = function(dt) {
-  newRec.x -= newRec.vx;
-  }
-  //Creating a rectangle below.
-  // let rectangle = new PIXI.Graphics();
-  // rectangle.beginFill(0x66CCFF);
-  // rectangle.lineStyle(4, 0xFF3300, 1);
-  // rectangle.drawRect(0, 0, 33, 33);
-
-  // //rectangle.drawRect(   x    ,   y      , width, height);
-  // rectangle.endFill();
-  //rectangle.x = AppWidth;
-  return newRec;
-}
-
-
-var newRect = new CreateRect("rectangle5", 132);
-Rects.push(newRect);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function update(delta)
-// {
-  
-// }
-
-// function start()
-// {
-// //display welcome
-// //if the user clicks the start button then start the game
-// // starting the game means displaying the player and sending some objects
-// }
-
-// function end()
-// {
-// //if the player hits the negative object then it is destroyed game is ended
-// //score is displayed
-// }
-
-
 
 /**This is the collision detection object.
  * It contains functions that detect collision depending on the object(shape)
  **/
-
-
-
-
 var CollisionDetect = 
 {
     hitRectangle: function (r1, r2) {
@@ -342,6 +358,94 @@ var CollisionDetect =
       }
 }
 
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------------------------------------------------------------------------------------------
+// Above this point The real game object exists------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+var w = screen.width;
+var h = screen.height;
+//Main Screen of the game
+var AppWidth = 600;
+var AppHeight = 400;
+
+
+var Rects = [];
+function CreateRect(Name, yPos, Speed, Value)
+{
+  let newRec = new PIXI.Graphics();
+  newRec.beginFill(0x66CCFF);
+  newRec.lineStyle(4, 0xFF3300, 1);
+  newRec.drawRect(0, 0, 33, 33);
+  newRec.endFill();
+  newRec.x = AppWidth;
+  newRec.y = yPos;
+  newRec.name = Name;
+  newRec.vx = Speed;
+  newRec.value = Value;
+
+  //Make this a function where it moves stuff
+  newRec.update = function(dt)
+  {
+  newRec.x -= newRec.vx;
+  }
+  //Creating a rectangle below.
+  // let rectangle = new PIXI.Graphics();
+  // rectangle.beginFill(0x66CCFF);
+  // rectangle.lineStyle(4, 0xFF3300, 1);
+  // rectangle.drawRect(0, 0, 33, 33);
+
+  // //rectangle.drawRect(   x    ,   y      , width, height);
+  // rectangle.endFill();
+  //rectangle.x = AppWidth;
+  return newRec;
+}
+
+
+
+
+// var newRect = new CreateRect("rectangle5", 132);
+// Rects.push(newRect);
+
+
+
+
+
+
+
+
+
+
+
+/**These are the notes that I am taking as I go along in this project
+ * 
+ * Function Start shall
+ *      -display welcome
+ *      -if the user clicks the start button then start the game
+ *      -starting the game means displaying the player and sending some objects
+ * 
+ * Function End shall
+ *      -if the player hits the negative object then it is destroyed game is ended
+ *      -score is displayed
+ */
+
 /**This is the keyboard function for handling the keyboard events */
 function keyboard(keyCode) 
 {
@@ -381,8 +485,8 @@ function keyboard(keyCode)
     return key;
 }
 
-PIXI.utils.sayHello(type)
-
+//-----------------------------------------------------------------------
+//Creating the screen of the application
 let app = new PIXI.Application({width: AppWidth, height: AppHeight, antialias: true});
 app.renderer.backgroundColor = 0x000000; //Color
 
@@ -601,7 +705,7 @@ function gameLoop(delta)
       for (i = 0; i<GameObjects.length; i++)
       {
         app.stage.addChild(GameObjects[i]);
-        app.stage.addChild(Rects[0]);
+        // app.stage.addChild(Rects[0]);
       }
     }
 
@@ -661,9 +765,9 @@ function play(delta)
     if (Gt>500 && Gt<1200){
 
 
-      GameObjects.forEach(rect => {
-        rect.update(delta);
-      });
+      // GameObjects.forEach(rect => {
+      //   rec.update(delta);
+      // });
       rectangle1.x -= 3;
     rectangle2.x -= 2;
     rectangle3.x -= 4;
