@@ -106,15 +106,15 @@ PIXI.utils.sayHello(type)
 
 //       // ------------------------------------------------------------------------
 //       //   Creating a rectangle below.
-//            let player = new PIXI.Graphics();
-//            player.beginFill(0x66CCFF);
-//            player.lineStyle(4, 0xFF3300, 1);
-//            player.drawRect(0, 0, 33, 33);
-//            //rectangle.drawRect(   x    ,   y      , width, height);
-//            player.endFill();
-//            player.x=0;
-//            player.y=this.AppHeight/2;
-//            app.stage.addChild(player);
+          //  let player = new PIXI.Graphics();
+          //  player.beginFill(0x66CCFF);
+          //  player.lineStyle(4, 0xFF3300, 1);
+          //  player.drawRect(0, 0, 33, 33);
+          //  //rectangle.drawRect(   x    ,   y      , width, height);
+          //  player.endFill();
+          //  player.x=0;
+          //  player.y=this.AppHeight/2;
+          //  app.stage.addChild(player);
         
 //        // ------------------------------------------------------------------------
       
@@ -486,46 +486,94 @@ function CreateRect(yPos, Speed, Value)
 }
 
 
-var lastestRec = new CreateRect(132,-10,10);
+//var lastestRec = new CreateRect(132,-10,10);
 
 //Number of Rectangles that we want to create
 
-function AllRects(Num_of_rects)
+function AllRects()
 {
-    yPos = 0;
-    Speed = 3;
-    Value = 10
+    var yPos = 0;
+    var Speed_Array = Add_Speed();
+    Value = 10;
     var latestRect;
-    for (i = 0; i < Num_of_rects; i++ )
+    var contain_rects = [];
+    for (i = 0; i < 100; i++ )
     {
-//           CreateRect         (yPos, Speed, Value)
-      latestRect = new CreateRect(yPos,Speed,Value);
+     //      CreateRect         (yPos, Speed, Value)
+      latestRect = new CreateRect(yPos,Speed_Array[i],Value);
       
-      if (i<5)
-      {
-        yPos +=40;
-      }
-
-      if (i>=5 && i%5==0)
+      if(i%5==0)
       {
         yPos = 0;
       }
-      if(i%5==1)
+      else
       {
-        yPos+=40;
+        yPos += 40;
       }
+      
+      // if (i<5)
+      // {
+      //   yPos +=40;
+      // }
+
+      // if (i>=5 && i%5==0)
+      // {
+      //   yPos = 0;
+      // }
+      // if(i%5>0)
+      // {
+      //   yPos+=40;
+      // }
+     contain_rects.push(latestRect);
     }
 
+  return contain_rects;
 }
 
 
+// function Addvalue()
+// {
+
+// }
+
+//GetsCalled in AllRects (which creates all the rectangles) to set the speed of all rectangles.
+function Add_Speed()
+{
+  var Speeds_of_rects = [];
+  var number_of_rects = 100;
+  for (i=0; i<number_of_rects; i++)
+  {
+    if (i<10)//2-3-4
+    {
+      Speeds_of_rects.push((Math.floor(Math.random() * 3) + 2));
+    }
+    else if(i<30) //Speed4-5-6-7
+    {
+      Speeds_of_rects.push((Math.floor(Math.random() * 5) + 3));
+    }
+    else if(i<50) //Speed 7-11
+    {
+      Speeds_of_rects.push((Math.floor(Math.random() * 6) + 5));
+    }
+    else if(i<80) //Speed7-13ish
+    {
+      Speeds_of_rects.push((Math.floor(Math.random() * 6) + 7));
+    }
+    else if(i<100) //Speed9-25
+    {
+      Speeds_of_rects.push((Math.floor(Math.random() * 17) + 10));
+    }
+
+  }
+  return Speeds_of_rects;
+}
 
 // var newRect = new CreateRect("rectangle5", 132);
 // Rects.push(newRect);
 
 
 
-
+var GameObjects = new AllRects();
 
 
 
@@ -608,6 +656,11 @@ player.drawRect(0, 0, 25, 25);
 //rectangle.drawRect(   x    ,   y      , width, height);
 player.endFill();
 
+
+
+
+
+
 //Creating a rectangle above.
 
 /*
@@ -654,6 +707,11 @@ rectangle4.x = AppWidth;
 rectangle4.y = 120;
 */
 
+
+
+
+
+
 //------------------------------------------------------------------------------------
 let style = new PIXI.TextStyle({
   fontFamily: "Arial",
@@ -667,16 +725,17 @@ let style = new PIXI.TextStyle({
   dropShadowAngle: Math.PI / 6,
   dropShadowDistance: 6,
 });
-let message = new PIXI.Text("Welcome to My Game!", style);
+  let message = new PIXI.Text("Are You Ready To Lose?", style);
  app.stage.addChild(message);
 
-//  message.position.set((AppWidth/2 -(message.width/2)),(AppHeight/2 -(message.height/2 - message.height/2)));
+  message.position.set((AppWidth/2 -(message.width/2)),0);
+  //(AppHeight/2 -(message.height/2 - message.height/2))
 //console.log(message.height);
 //------------------------------------------------------------------------------------
 
 
 
-var GameObjects = [player, rectangle1, rectangle2, rectangle3, rectangle4,lastestRec];
+//var GameObjects = [player, rectangle1, rectangle2, rectangle3, rectangle4,lastestRec];
 
 // for (i = 0; i<GameObjects.length; i++)
 // {
@@ -783,6 +842,8 @@ function setup(hello)
     app.ticker.add(delta => gameLoop(delta));
 }
 
+
+app.stage.addChild(player);
 var Gt = 0;
 //Moved to GameObj
 //Displaying Objects
@@ -795,6 +856,7 @@ function gameLoop(delta)
     console.log(Gt);
     if (Gt>200)
     {
+      
       // app.stage.addChild(message);
       app.stage.removeChild(message)
       //message.position.set((AppWidth/2 -(message.width/2)),(AppHeight/2 -(message.height/2 - message.height/2)));
@@ -803,32 +865,53 @@ function gameLoop(delta)
 
     if(Gt>200 && Gt < 250)
     {
-      for (i = 0; i<GameObjects.length; i++)
-      {
-        app.stage.addChild(GameObjects[i]);
-        // app.stage.addChild(Rects[0]);
-      }
+          for (i = 0; i<10; i++)
+          {
+            app.stage.addChild(GameObjects[i]);
+            // app.stage.addChild(Rects[0]);
+          }  
+          for (i = 10; i<30; i++)
+          {
+            app.stage.addChild(GameObjects[i]);
+            // app.stage.addChild(Rects[0]);
+          }
+          for (i = 30; i<50; i++)
+          {
+            app.stage.addChild(GameObjects[i]);
+            // app.stage.addChild(Rects[0]);
+          }
+          for (i = 50; i<80; i++)
+          {
+            app.stage.addChild(GameObjects[i]);
+            // app.stage.addChild(Rects[0]);
+          }
+          for (i = 80; i<90; i++)
+          {
+            app.stage.addChild(GameObjects[i]);
+            // app.stage.addChild(Rects[0]);
+          }
+          for (i = 90; i<100; i++)
+          {
+            app.stage.addChild(GameObjects[i]);
+            // app.stage.addChild(Rects[0]);
+          }
     }
 
-
-    //Move the rectangle 1 pixel 
+     
     
-    //console.log("We are in the gameloop");
+    
+    for(i = 0; i<GameObjects.length;i++)
+    {
+      if (CollisionDetect.hitRectangle(player,GameObjects[i]))
+      {
+           console.log("We have a hit") ;
+            app.stage.removeChild(player);
+            app.stage.removeChild(GameObjects[i]);
+      }  
+    }
     
     
     /*
-    for(i = 0; i<GameObjects.length;i++)
-    {
-      if (CollisionDetect.hitRectangle(GameObjects[0],GameObjects[i+1]))
-      {
-           console.log("We have a hit") ;
-            app.stage.removeChild(GameObjects[0]);
-            app.stage.removeChild(GameObjects[i+1]);
-      }  
-    }
-    */
-    
-    
     if (CollisionDetect.hitRectangle(player,rectangle1))
     {
           console.log("We have a hit") ;
@@ -854,6 +937,9 @@ function gameLoop(delta)
           app.stage.removeChild(player);
           app.stage.removeChild(rectangle4);
     }
+    */
+
+
     state(delta);
     //Game.update(delta);
 }
@@ -861,28 +947,195 @@ function gameLoop(delta)
 //This for moving the rectangles
 function play(delta) 
 {
-  player.x += player.vx;
+  if(player.x >= 0 && (player.x + player.vx) >= 0){
+    player.x += player.vx;
+  }
+  else {
+    player.x = 0;
+  }
   player.y += player.vy;
     //rectangle.vx = 1;
     //rectangle.vy = 1;
     //Move the rectangle 1 pixel 
-    if (Gt>300 && Gt<800)
+    //0-10
+    if (Gt>300 && Gt<1300)
     {
-    
-
+      for(i=0;i<5;i++)
+      {
+        GameObjects[i].update(delta);
+      }
+      //5-10
+      if (Gt>800)
+      {
+        for(i=5;i<10;i++)
+        {
+          GameObjects[i].update(delta);
+        }
+      }
       // GameObjects.forEach(rect => {
       //   rec.update(delta);
       // });
-      rectangle1.x -= 2;
-      rectangle2.x -= 3;
-      rectangle3.x -= 2;
-      rectangle4.x -= 4;
+      // rectangle1.x -= 2;
+      // rectangle2.x -= 3;
+      // rectangle3.x -= 2;
+      // rectangle4.x -= 4;
     }
 
-    if (Gt>1200 && Gt<1500)
+    //10-30
+    if (Gt>1600 && Gt<3000)
     {
-
+      //10-15
+      for (i = 10; i<15; i++)
+      {
+        GameObjects[i].update(delta);
+      }
+      //15-20
+      if (Gt>1800)
+      {
+        for(i=15;i<20;i++)
+        {
+          GameObjects[i].update(delta);
+        }
+      }
+      //20-25
+      if (Gt>2000)
+      {
+        for(i=20;i<25;i++)
+        {
+          GameObjects[i].update(delta);
+        }
+      }
+      //25-30
+      if (Gt>2500)
+      {
+        for(i=25;i<30;i++)
+        {
+          GameObjects[i].update(delta);
+        }
+      }
     }
+
+    //30-50
+    if (Gt>3000 && Gt<4000)
+    {
+      //30-35
+      for (i = 30; i<35; i++)
+      {
+        GameObjects[i].update(delta);
+      }
+      //35-40
+      if (Gt>3200)
+      {
+        for(i=35;i<40;i++)
+        {
+          GameObjects[i].update(delta);
+        }
+      }
+      //40-45
+      if (Gt>3300)
+      {
+        for(i=40;i<45;i++)
+        {
+          GameObjects[i].update(delta);
+        }
+      }
+      //45-50
+      if (Gt>3700)
+      {
+        for(i=45;i<50;i++)
+        {
+          GameObjects[i].update(delta);
+        }
+      }
+    }
+
+    //50-80
+    if (Gt>4000 && Gt<5200)
+    {
+      //50-55
+      for (i = 50; i<55; i++)
+      {
+        GameObjects[i].update(delta);
+      }
+      //55-60
+      if (Gt>4200)
+      {
+        for(i=55;i<60;i++)
+        {
+          GameObjects[i].update(delta);
+        }
+      }
+      //60-65
+      if (Gt>4400)
+      {
+        for(i=60;i<65;i++)
+        {
+          GameObjects[i].update(delta);
+        }
+      }
+      //65-70
+      if (Gt>4700)
+      {
+        for(i=65;i<70;i++)
+        {
+          GameObjects[i].update(delta);
+        }
+      }
+      //70-75
+      if (Gt>4750)
+      {
+        for(i=70;i<75;i++)
+        {
+          GameObjects[i].update(delta);
+        }
+      }
+      //75-80
+      if (Gt>4950)
+      {
+        for(i=75;i<80;i++)
+        {
+          GameObjects[i].update(delta);
+        }
+      }
+    }
+
+    //80-90
+    if (Gt>5300 && Gt<5600)
+    {
+      //80-85
+      for (i = 80; i<85; i++)
+      {
+        GameObjects[i].update(delta);
+      }
+      //85-90
+      if (Gt>5500)
+      {
+        for(i=85;i<90;i++)
+        {
+          GameObjects[i].update(delta);
+        }
+      }
+    }
+
+    //90-100
+    if (Gt>5700 && Gt<6200)
+    {
+      //90-95
+
+      for (i = 90; i<95; i++)
+      {
+        GameObjects[i].update(delta);
+      }
+      //95-100
+      if (Gt>6000)
+      {
+        for(i=95;i<100;i++)
+        {
+          GameObjects[i].update(delta);
+        }
+      }
+    }
+
 }
 
 var setupObj = new setup('hello world');
