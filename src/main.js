@@ -607,8 +607,10 @@ function keyboard(keyCode)
         if (key.isUp && key.press) key.press();
         key.isDown = true;
         key.isUp = false;
-      }
+        //only prev default inside the designated key
       event.preventDefault();
+      }
+      
     };
   
     //The `upHandler`
@@ -617,8 +619,9 @@ function keyboard(keyCode)
         if (key.isDown && key.release) key.release();
         key.isDown = false;
         key.isUp = true;
+        event.preventDefault();
       }
-      event.preventDefault();
+     
     };
   
     //Attach event listeners
@@ -1135,22 +1138,9 @@ function play(delta)
         }
       }
     }
-
 }
 
 var setupObj = new setup('hello world');
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
