@@ -18,4 +18,8 @@ export class Game {
 var foo = new Game();
 foo.run(8);
 
+
+
+
+
 //number string boolean
