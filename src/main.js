@@ -5,29 +5,20 @@ if(!PIXI.utils.isWebGLSupported()){
 
 PIXI.utils.sayHello(type)
 
+let app = new PIXI.Application({width: this.AppWidth, height: this.AppHeight, antialias: true});
+app.renderer.backgroundColor = 0x000000; //Color
 
-var Game =
-{ 
-  
-  //Game time since start
-  GameTime: 0,
-  
-  //Width of the screen, perhaps should be window.width
-  w : screen.width,
-  h : screen.height,
-  //Main Screen of the game
-  AppWidth : 600,
-  AppHeight : 400,
-  
-  //Array that stores Game and Text Objects
-  GameObjects : [],
-  TextObjects : [],
-  
-  //Current and High Score
-  CurrentScore : 0,
-  HighScore : 0,
-//----------------------------------------------------------------------------------------------Above Variables/ Below Keyboard FUnction
-  keyboard: function (keyCode) 
+document.body.appendChild(app.view);
+
+var MiddleLeft = (this.w/2)-(this.AppWidth/2);
+var MiddleTop = (this.h/2)-(this.AppHeight-(this.AppHeight/2));
+
+app.view.style.left = MiddleLeft;
+app.view.style.top = MiddleTop;
+app.view.style.position = "relative";
+app.renderer.autoResize = true;
+
+function keyboard(keyCode) 
   {
     let key = {};//constructor
     key.code = keyCode; 
@@ -66,24 +57,50 @@ var Game =
       "keyup", key.upHandler.bind(key), false
     );
     return key;
-  },
+  }
+
+var Game =
+{ 
+  
+  //Game time since start
+  GameTime: 0,
+
+  //Width of the screen, perhaps should be window.width
+  w : screen.width,
+  h : screen.height,
+  //Main Screen of the game
+  AppWidth : 600,
+  AppHeight : 400,
+  player: undefined,
+  //Array that stores Game and Text Objects
+  GameObjects : [],
+  TextObjects : [],
+  
+  //Current and High Score
+  CurrentScore : 0,
+  HighScore : 0,
+
+  //----------------------------------------------------------------------------------------------Above Variables/ Below Keyboard FUnction
+
   //----------------------------------------------------------------------------------------Above Keyboard Function/ Below Start Function
   
   start: function ()
   {
     //Creating the screen of the application
-    let app = new PIXI.Application({width: this.AppWidth, height: this.AppHeight, antialias: true});
-    app.renderer.backgroundColor = 0x000000; //Color
+    // let app = new PIXI.Application({width: this.AppWidth, height: this.AppHeight, antialias: true});
+    // app.renderer.backgroundColor = 0x000000; //Color
 
-    document.body.appendChild(app.view);
+    // document.body.appendChild(app.view);
 
-    var MiddleLeft = (this.w/2)-(this.AppWidth/2);
-    var MiddleTop = (this.h/2)-(this.AppHeight-(this.AppHeight/2));
+    // var MiddleLeft = (this.w/2)-(this.AppWidth/2);
+    // var MiddleTop = (this.h/2)-(this.AppHeight-(this.AppHeight/2));
 
-    app.view.style.left = MiddleLeft;
-    app.view.style.top = MiddleTop;
-    app.view.style.position = "relative";
-    app.renderer.autoResize = true;
+    // app.view.style.left = MiddleLeft;
+    // app.view.style.top = MiddleTop;
+    // app.view.style.position = "relative";
+    // app.renderer.autoResize = true;
+    //Game.app = app;
+    
     //------------------------------------------------------------------------
 
     //Create Welcome to my game text
@@ -110,15 +127,16 @@ var Game =
 
       // ------------------------------------------------------------------------
       //   Creating a Player below.
-           let player = new PIXI.Graphics();
-           player.beginFill(0xFFFF00);
-           player.lineStyle(4, 0x008000, 1);
-           player.drawRect(0, 0, 25, 25);
-           //rectangle.drawRect(   x    ,   y      , width, height);
-           player.endFill();
-           player.x=0;
-           player.y=this.AppHeight/2;
-           app.stage.addChild(player);
+      let player = new PIXI.Graphics();
+      player.beginFill(0xFFFF00);
+      player.lineStyle(4, 0x008000, 1);
+      player.drawRect(0, 0, 25, 25);
+      //rectangle.drawRect(   x    ,   y      , width, height);
+      player.endFill();
+      player.x=0;
+      player.y=this.AppHeight/2;
+      app.stage.addChild(player);
+      Game.player= player;
            
        // ------------------------------------------------------------------------
       
@@ -162,8 +180,11 @@ var Game =
     
           DispHS.position.set((this.AppWidth/3 -(DispHS.width/2)),40);
           Game.GameObjects = new this.AllRects();
-  },
 
+
+    return app;
+
+  },
 
   //----------------------------------------------------------------------------------------Above Start Function/ Below CreateRect Function
 
@@ -174,12 +195,12 @@ var Game =
     newRec.lineStyle(4, 0xFF3300, 1);
     newRec.drawRect(0, 0, 33, 33);
     newRec.endFill();
-    newRec.x = AppWidth;
+    newRec.x = Game.AppWidth;
     newRec.y = yPos;
     //newRec.name = Name;
     newRec.vx = Speed;
     newRec.value = Value;
-    Rects.push(newRec);
+    Game.GameObjects.push(newRec);
     //Make this a function where it moves stuff
     newRec.update = function(dt)
     {
@@ -196,23 +217,23 @@ var Game =
     //rectangle.x = AppWidth;
     return newRec;
   },
-
-
   //----------------------------------------------------------------------------------------Above CreateRect Function/ Below AllRects Function
-
   //Number of Rectangles that we want to create
-
   AllRects: function ()
 {
-    var yPos = 0;
-    var Speed_Array = Add_Speed();
+    //were vars
+    yPos = 0;
+    Speed_Array = [];
     Value = 10;
-    var latestRect;
-    var contain_rects = [];
+    var latestRect = 0;
+    contain_rects =[];
+
+    Speed_Array = Game.Add_Speed();
+
     for (i = 0; i < 100; i++ )
     {
      //      CreateRect         (yPos, Speed, Value)
-      latestRect = new CreateRect(yPos,Speed_Array[i],Value);
+      latestRect = new Game.CreateRect(yPos,Speed_Array[i],Value);
       
       if(i%5==0)
       {
@@ -241,12 +262,12 @@ var Game =
 
   return contain_rects;
 },
-  
   //----------------------------------------------------------------------------------------Above AllRects Function/ Below Add_Speed Function
   Add_Speed: function ()
   {
-    var Speeds_of_rects = [];
-    var number_of_rects = 100;
+    //were vars
+    Speeds_of_rects = [];
+    number_of_rects = 100;
     for (i=0; i<number_of_rects; i++)
     {
       if (i<10)//2-3-4
@@ -273,14 +294,8 @@ var Game =
     }
     return Speeds_of_rects;
   },
-
   CurrentScore: function(delta)
-  {
-    
-    
-    this.current_score = 0;
-
-  },
+  {},
 
   //----------------------------------------------------------------------------------------Above Add_Speed Function/ Below setup Function
 
@@ -288,9 +303,9 @@ var Game =
   {
     this.id = hello;
 
-      player.y = 96;
-      player.vx = 0;
-      player.vy = 0;
+      Game.player.y = 96;
+      Game.player.vx = 0;
+      Game.player.vy = 0;
 
     //Adding all the keys
       let left = keyboard(37),
@@ -300,8 +315,8 @@ var Game =
     
     left.press = () => {
         //Change the rectangle's velocity when the key is pressed
-        player.vx = -3;
-        player.vy = 0;
+        Game.player.vx = -3;
+        Game.player.vy = 0;
       };
       
       //Left arrow key `release` method
@@ -309,52 +324,52 @@ var Game =
         //If the left arrow has been released, and the right arrow isn't down,
         //and the rectangle isn't moving vertically:
         //Stop the rectangle
-        if (!right.isDown && player.vy === 0) {
-          player.vx = 0;
+        if (!right.isDown && Game.player.vy === 0) {
+          Game.player.vx = 0;
         }
       };
     
       //Up
       up.press = () => {
-        player.vy = -3;
-        player.vx = 0;
+        Game.player.vy = -3;
+        Game.player.vx = 0;
       };
       up.release = () => {
-        if (!down.isDown && player.vx === 0) {
-          player.vy = 0;
+        if (!down.isDown && Game.player.vx === 0) {
+          Game.player.vy = 0;
         }
       };
     
       //Right
       right.press = () => {
-        player.vx = 3;
-        player.vy = 0;
+        Game.player.vx = 3;
+        Game.player.vy = 0;
       };
       right.release = () => {
-        if (!left.isDown && player.vy === 0) {
-          player.vx = 0;
+        if (!left.isDown && Game.player.vy === 0) {
+          Game.player.vx = 0;
         }
       };
     
       //Down
       down.press = () => {
-        player.vy = 3;
-        player.vx = 0;
+        Game.player.vy = 3;
+        Game.player.vx = 0;
       };
       down.release = () => {
-        if (!up.isDown && player.vx === 0) {
-          player.vy = 0;
+        if (!up.isDown && Game.player.vx === 0) {
+          Game.player.vy = 0;
         }
       };
 
 
-      state = play;
-
+      //state(delta);
+      //Game.play(delta);
     //Above adding all the keys
     
     //Start the game loop by adding the `gameLoop` function to
     //Pixi's `ticker` and providing it with a `delta` argument.
-    app.ticker.add(delta => gameLoop(delta));
+    app.ticker.add(delta => Game.update(delta));
   },
    
   //----------------------------------------------------------------------------------------Above setup Function/ Below update Function
@@ -376,34 +391,35 @@ var Game =
 
     if(Game.GameTime>200 && Game.GameTime < 250)
     {
+
           for (i = 0; i<10; i++)
           {
-            app.stage.addChild(GameObjects[i]);
+            app.stage.addChild(Game.GameObjects[i]);
             // app.stage.addChild(Rects[0]);
           }  
           for (i = 10; i<30; i++)
           {
-            app.stage.addChild(GameObjects[i]);
+            app.stage.addChild(Game.GameObjects[i]);
             // app.stage.addChild(Rects[0]);
           }
           for (i = 30; i<50; i++)
           {
-            app.stage.addChild(GameObjects[i]);
+            app.stage.addChild(Game.GameObjects[i]);
             // app.stage.addChild(Rects[0]);
           }
           for (i = 50; i<80; i++)
           {
-            app.stage.addChild(GameObjects[i]);
+            app.stage.addChild(Game.GameObjects[i]);
             // app.stage.addChild(Rects[0]);
           }
           for (i = 80; i<90; i++)
           {
-            app.stage.addChild(GameObjects[i]);
+            app.stage.addChild(Game.GameObjects[i]);
             // app.stage.addChild(Rects[0]);
           }
           for (i = 90; i<100; i++)
           {
-            app.stage.addChild(GameObjects[i]);
+            app.stage.addChild(Game.GameObjects[i]);
             // app.stage.addChild(Rects[0]);
           }
     }
@@ -411,17 +427,17 @@ var Game =
      
     
     
-    for(i = 0; i<GameObjects.length;i++)
+    for(i = 0; i<Game.GameObjects.length;i++)
     {
-      if (CollisionDetect.hitRectangle(player,GameObjects[i]))
+      if (CollisionDetect.hitRectangle(Game.player,Game.GameObjects[i]))
       {
            console.log("We have a hit") ;
-            app.stage.removeChild(player);
-            app.stage.removeChild(GameObjects[i]);
+            app.stage.removeChild(Game.player);
+            app.stage.removeChild(Game.GameObjects[i]);
       }  
     }
     
-    
+    Game.play(delta);
     /*
     if (CollisionDetect.hitRectangle(player,rectangle1))
     {
@@ -451,7 +467,7 @@ var Game =
     */
 
 
-    state(delta);
+    
     //Game.update(delta);
   },
             
@@ -471,14 +487,17 @@ var Game =
 
   play: function (delta) 
   {
-    if(player.x >= 0 && (player.x + player.vx) >= 0){
-      player.x += player.vx;
+    //Renderer.update(delta);
+
+
+    if(Game.player.x >= 0 && (Game.player.x + Game.player.vx) >= 0){
+      Game.player.x += Game.player.vx;
     }
     else 
     {
-      player.x = 0;
+      Game.player.x = 0;
     }
-    player.y += player.vy;
+    Game.player.y += Game.player.vy;
       //rectangle.vx = 1;
       //rectangle.vy = 1;
       //Move the rectangle 1 pixel 
@@ -666,7 +685,20 @@ var Game =
 };
 
 
+// var Renderer = {
+//   stage: undefined,
 
+//   GameObjects: [],
+
+//   createRects: function() {
+
+//   },
+
+
+//   update: function(dt) {
+
+//   }
+// }
 
 
 /**This is the collision detection object.
@@ -731,7 +763,7 @@ var CollisionDetect =
  Game.start();
   
 
-var setupObj = new setup('hello world');
+var setupObj = new Game.setup('hello world');
 
 
 
@@ -1513,17 +1545,4 @@ console.log(setupObj);
 
   //app.renderer.view.style.position = 200;
 
-  //let app = new PIXI.Applirectangleion({width: 500, height: 50});
-  //app.view.style.left = 500;
-  //new PIXI.rectangle(10, 10, 10, 10);
-  //app.stage
-
-  //let sprite = new PIXI.Sprite.fromImage('assets/image.png');
-
-  //var h = document.body.clientHeight;
-  //var w = document.body.clientWidth;
-
-  //window.alert(h);
-
-  //Add the canvas that Pixi automatically created for you to the HTML document
 */
