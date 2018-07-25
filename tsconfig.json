@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "allowJs": false,
+        "outDir": "build",
+        "module": "commonjs",
+        "sourceMap": true,
+    },
+    "include": [
+        "src/**/*",
+        "app.ts",
+        "lib/**/*",
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
