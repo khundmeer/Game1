@@ -5,18 +5,22 @@ if(!PIXI.utils.isWebGLSupported()){
 
 PIXI.utils.sayHello(type)
 
-let app = new PIXI.Application({width: this.AppWidth, height: this.AppHeight, antialias: true});
-app.renderer.backgroundColor = 0x000000; //Color
+// var app = new PIXI.Application({width: this.AppWidth, height: this.AppHeight, antialias: true});
+// app.renderer.backgroundColor = 0x000000; //Color
 
-document.body.appendChild(app.view);
 
-var MiddleLeft = (this.w/2)-(this.AppWidth/2);
-var MiddleTop = (this.h/2)-(this.AppHeight-(this.AppHeight/2));
 
-app.view.style.left = MiddleLeft;
-app.view.style.top = MiddleTop;
-app.view.style.position = "relative";
-app.renderer.autoResize = true;
+// var MiddleLeft = (this.w/2)-(this.AppWidth/2);
+// var MiddleTop = (this.h/2)-(this.AppHeight-(this.AppHeight/2));
+
+// app.view.style.left = MiddleLeft;
+// app.view.style.top = MiddleTop;
+// app.view.style.position = "relative";
+// app.renderer.autoResize = true;
+
+
+// document.body.appendChild(app.view);
+
 
 function keyboard(keyCode) 
   {
@@ -64,7 +68,7 @@ var Game =
   
   //Game time since start
   GameTime: 0,
-
+  app : undefined,
   //Width of the screen, perhaps should be window.width
   w : screen.width,
   h : screen.height,
@@ -75,7 +79,7 @@ var Game =
   //Array that stores Game and Text Objects
   GameObjects : [],
   TextObjects : [],
-  
+  GameMessage : undefined,
   //Current and High Score
   CurrentScore : 0,
   HighScore : 0,
@@ -86,42 +90,43 @@ var Game =
   
   start: function ()
   {
+    console.log(this);
     //Creating the screen of the application
-    // let app = new PIXI.Application({width: this.AppWidth, height: this.AppHeight, antialias: true});
-    // app.renderer.backgroundColor = 0x000000; //Color
+    var app = new PIXI.Application({width: this.AppWidth, height: this.AppHeight, antialias: true});
+    app.renderer.backgroundColor = 0x000000; //Color
 
-    // document.body.appendChild(app.view);
+    document.body.appendChild(app.view);
 
-    // var MiddleLeft = (this.w/2)-(this.AppWidth/2);
-    // var MiddleTop = (this.h/2)-(this.AppHeight-(this.AppHeight/2));
+    var MiddleLeft = (this.w/2)-(this.AppWidth/2);
+    var MiddleTop = (this.h/2)-(this.AppHeight-(this.AppHeight/2));
 
-    // app.view.style.left = MiddleLeft;
-    // app.view.style.top = MiddleTop;
-    // app.view.style.position = "relative";
-    // app.renderer.autoResize = true;
-    //Game.app = app;
+    app.view.style.left = MiddleLeft;
+    app.view.style.top = MiddleTop;
+    app.view.style.position = "relative";
+    app.renderer.autoResize = true;
+    Game.app = app;
     
     //------------------------------------------------------------------------
 
     //Create Welcome to my game text
     let style = new PIXI.TextStyle(
-      {
-        fontFamily: "Arial",
-        fontSize: 36,
-        fill: "white",
-        stroke: '#ff3300',
-        strokeThickness: 4,
-        dropShadow: true,
-        dropShadowColor: "#000000",
-        dropShadowBlur: 4,
-        dropShadowAngle: Math.PI / 6,
-        dropShadowDistance: 6,
-      });
+    {
+      fontFamily: "Arial",
+      fontSize: 36,
+      fill: "white",
+      stroke: '#ff3300',
+      strokeThickness: 4,
+      dropShadow: true,
+      dropShadowColor: "#000000",
+      dropShadowBlur: 4,
+      dropShadowAngle: Math.PI / 6,
+      dropShadowDistance: 6,
+    });
       
-      let message = new PIXI.Text("Are You Ready To Lose?", style);
-      app.stage.addChild(message);
+      Game.GameMessage = new PIXI.Text("Are You Ready To Lose?", style);
+      Game.app.stage.addChild(Game.GameMessage);
 
-      message.position.set((this.AppWidth/2 -(message.width/2)),0);
+      Game.GameMessage.position.set((Game.AppWidth/2 -(Game.GameMessage.width/2)),0);
       // (AppHeight/2 -(message.height/2 - message.height/2))
       // console.log(message.height);
 
@@ -135,77 +140,81 @@ var Game =
       player.endFill();
       player.x=0;
       player.y=this.AppHeight/2;
-      app.stage.addChild(player);
+      Game.app.stage.addChild(player);
       Game.player= player;
            
-       // ------------------------------------------------------------------------
+      // ------------------------------------------------------------------------
       
-       let ScoreStyle = new PIXI.TextStyle(
-        {
-          fontFamily: "Arial",
-          fontSize: 22,
-          fill: "white",
-          stroke: '#ffffff',
-          strokeThickness: .5,
-          dropShadow: false,
-          dropShadowColor: "#000000",
-          dropShadowBlur: 2,
-          dropShadowAngle: Math.PI / 6,
-          dropShadowDistance: 6,
-        });
+      let ScoreStyle = new PIXI.TextStyle(
+      {
+        fontFamily: "Arial",
+        fontSize: 22,
+        fill: "white",
+        stroke: '#ffffff',
+        strokeThickness: .5,
+        dropShadow: false,
+        dropShadowColor: "#000000",
+        dropShadowBlur: 2,
+        dropShadowAngle: Math.PI / 6,
+        dropShadowDistance: 6,
+      });
         
-        let DispScore = new PIXI.Text("Score", ScoreStyle);
-        app.stage.addChild(DispScore);
+      let DispScore = new PIXI.Text("Score", ScoreStyle);
+      Game.app.stage.addChild(DispScore);
+
+      DispScore.position.set((this.AppWidth/2 -(DispScore.width/2)),40);
+
+      // ------------------------------------------------------------------------
+
+      let HS_Style = new PIXI.TextStyle(
+      {
+        fontFamily: "Arial",
+        fontSize: 22,
+        fill: "white",
+        stroke: '#ffffff',
+        strokeThickness: .5,
+        dropShadow: false,
+        dropShadowColor: "#000000",
+        dropShadowBlur: 2,
+        dropShadowAngle: Math.PI / 6,
+        dropShadowDistance: 6,
+      });
+        
+        let DispHS = new PIXI.Text("High Score", HS_Style);
+        Game.app.stage.addChild(DispHS);
   
-        DispScore.position.set((this.AppWidth/2 -(DispScore.width/2)),40);
-
-        // ------------------------------------------------------------------------
-
-        let HS_Style = new PIXI.TextStyle(
-          {
-            fontFamily: "Arial",
-            fontSize: 22,
-            fill: "white",
-            stroke: '#ffffff',
-            strokeThickness: .5,
-            dropShadow: false,
-            dropShadowColor: "#000000",
-            dropShadowBlur: 2,
-            dropShadowAngle: Math.PI / 6,
-            dropShadowDistance: 6,
-          });
-          
-          let DispHS = new PIXI.Text("High Score", HS_Style);
-          app.stage.addChild(DispHS);
-    
-          DispHS.position.set((this.AppWidth/3 -(DispHS.width/2)),40);
-          Game.GameObjects = new this.AllRects();
+        DispHS.position.set((this.AppWidth/3 -(DispHS.width/2)),40);
+        Game.GameObjects = new this.AllRects();
 
 
-    return app;
-
+    return Game.app;
   },
 
   //----------------------------------------------------------------------------------------Above Start Function/ Below CreateRect Function
 
-  CreateRect: function (yPos, Speed, Value)
+  CreateRect: function (yPos, Speed, Value, isEnemy)
   {
     let newRec = new PIXI.Graphics();
-    newRec.beginFill(0x66CCFF);
-    newRec.lineStyle(4, 0xFF3300, 1);
+
+    var color = isEnemy? 0x66CCFF : 0xFF3300;//ternary operator
+
+    newRec.beginFill(color);
+    newRec.lineStyle(4, color, 1);
     newRec.drawRect(0, 0, 33, 33);
     newRec.endFill();
     newRec.x = Game.AppWidth;
     newRec.y = yPos;
     //newRec.name = Name;
     newRec.vx = Speed;
-    newRec.value = Value;
+    newRec.value = isEnemy? -5 : 10;
     Game.GameObjects.push(newRec);
     //Make this a function where it moves stuff
     newRec.update = function(dt)
     {
     newRec.x -= newRec.vx;
     }
+    newRec.isEnemy = isEnemy;//true/false
+
     //Creating a rectangle below.
     // let rectangle = new PIXI.Graphics();
     // rectangle.beginFill(0x66CCFF);
@@ -220,29 +229,31 @@ var Game =
   //----------------------------------------------------------------------------------------Above CreateRect Function/ Below AllRects Function
   //Number of Rectangles that we want to create
   AllRects: function ()
-{
+  {
     //were vars
     yPos = 0;
-    Speed_Array = [];
-    Value = 10;
+    Value = 0;
     var latestRect = 0;
     contain_rects =[];
 
-    Speed_Array = Game.Add_Speed();
+    let Speed_Array = Game.Add_Speed();
 
+    let ranNum;
     for (i = 0; i < 100; i++ )
     {
-     //      CreateRect         (yPos, Speed, Value)
-      latestRect = new Game.CreateRect(yPos,Speed_Array[i],Value);
       
       if(i%5==0)
       {
         yPos = 0;
+        ranNum = Math.floor(Math.random() * 5);
       }
       else
       {
         yPos += 40;
       }
+
+      //      CreateRect         (yPos, Speed, Value)
+       latestRect = new Game.CreateRect(yPos,Speed_Array[i],Value, i%5 == ranNum);
       
       // if (i<5)
       // {
@@ -261,7 +272,7 @@ var Game =
     }
 
   return contain_rects;
-},
+  },
   //----------------------------------------------------------------------------------------Above AllRects Function/ Below Add_Speed Function
   Add_Speed: function ()
   {
@@ -369,7 +380,7 @@ var Game =
     
     //Start the game loop by adding the `gameLoop` function to
     //Pixi's `ticker` and providing it with a `delta` argument.
-    app.ticker.add(delta => Game.update(delta));
+    Game.app.ticker.add(delta => Game.update(delta));
   },
    
   //----------------------------------------------------------------------------------------Above setup Function/ Below update Function
@@ -379,14 +390,14 @@ var Game =
     // player1.score--;
     // player1.update(delta);
     //gameLoop.time += delta;
-    console.log(Game.GameTime);
+    //console.log(Game.GameTime);
     if (Game.GameTime>200)
     {
       
       // app.stage.addChild(message);
-      app.stage.removeChild(message)
+      Game.app.stage.removeChild(Game.GameMessage)
       //message.position.set((AppWidth/2 -(message.width/2)),(AppHeight/2 -(message.height/2 - message.height/2)));
-      console.log(Game.GameTime);
+      //console.log(Game.GameTime);
     }
 
     if(Game.GameTime>200 && Game.GameTime < 250)
@@ -394,32 +405,32 @@ var Game =
 
           for (i = 0; i<10; i++)
           {
-            app.stage.addChild(Game.GameObjects[i]);
+            Game.app.stage.addChild(Game.GameObjects[i]);
             // app.stage.addChild(Rects[0]);
           }  
           for (i = 10; i<30; i++)
           {
-            app.stage.addChild(Game.GameObjects[i]);
+            Game.app.stage.addChild(Game.GameObjects[i]);
             // app.stage.addChild(Rects[0]);
           }
           for (i = 30; i<50; i++)
           {
-            app.stage.addChild(Game.GameObjects[i]);
+            Game.app.stage.addChild(Game.GameObjects[i]);
             // app.stage.addChild(Rects[0]);
           }
           for (i = 50; i<80; i++)
           {
-            app.stage.addChild(Game.GameObjects[i]);
+            Game.app.stage.addChild(Game.GameObjects[i]);
             // app.stage.addChild(Rects[0]);
           }
           for (i = 80; i<90; i++)
           {
-            app.stage.addChild(Game.GameObjects[i]);
+            Game.app.stage.addChild(Game.GameObjects[i]);
             // app.stage.addChild(Rects[0]);
           }
           for (i = 90; i<100; i++)
           {
-            app.stage.addChild(Game.GameObjects[i]);
+            Game.app.stage.addChild(Game.GameObjects[i]);
             // app.stage.addChild(Rects[0]);
           }
     }
@@ -429,11 +440,17 @@ var Game =
     
     for(i = 0; i<Game.GameObjects.length;i++)
     {
-      if (CollisionDetect.hitRectangle(Game.player,Game.GameObjects[i]))
+      var o =Game.GameObjects[i];
+      if (CollisionDetect.hitRectangle(Game.player,o))
       {
+        if(o.isEnemy){
            console.log("We have a hit") ;
-            app.stage.removeChild(Game.player);
-            app.stage.removeChild(Game.GameObjects[i]);
+           Game.app.stage.removeChild(Game.player);
+           Game.app.stage.removeChild(o);
+        }
+        else {
+          //score
+        }
       }  
     }
     
@@ -506,14 +523,14 @@ var Game =
       {
         for(i=0;i<5;i++)
         {
-          GameObjects[i].update(delta);
+          Game.GameObjects[i].update(delta);
         }
         //5-10
         if (Game.GameTime>800)
         {
           for(i=5;i<10;i++)
           {
-            GameObjects[i].update(delta);
+            Game.GameObjects[i].update(delta);
           }
         }
         // GameObjects.forEach(rect => {
@@ -531,14 +548,14 @@ var Game =
         //10-15
         for (i = 10; i<15; i++)
         {
-          GameObjects[i].update(delta);
+          Game.GameObjects[i].update(delta);
         }
         //15-20
         if (Game.GameTime>1800)
         {
           for(i=15;i<20;i++)
           {
-            GameObjects[i].update(delta);
+            Game.GameObjects[i].update(delta);
           }
         }
         //20-25
@@ -546,7 +563,7 @@ var Game =
         {
           for(i=20;i<25;i++)
           {
-            GameObjects[i].update(delta);
+            Game.GameObjects[i].update(delta);
           }
         }
         //25-30
@@ -554,7 +571,7 @@ var Game =
         {
           for(i=25;i<30;i++)
           {
-            GameObjects[i].update(delta);
+            Game.GameObjects[i].update(delta);
           }
         }
       }
@@ -565,14 +582,14 @@ var Game =
         //30-35
         for (i = 30; i<35; i++)
         {
-          GameObjects[i].update(delta);
+          Game.GameObjects[i].update(delta);
         }
         //35-40
         if (Game.GameTime>3200)
         {
           for(i=35;i<40;i++)
           {
-            GameObjects[i].update(delta);
+            Game.GameObjects[i].update(delta);
           }
         }
         //40-45
@@ -580,7 +597,7 @@ var Game =
         {
           for(i=40;i<45;i++)
           {
-            GameObjects[i].update(delta);
+            Game.GameObjects[i].update(delta);
           }
         }
         //45-50
@@ -588,7 +605,7 @@ var Game =
         {
           for(i=45;i<50;i++)
           {
-            GameObjects[i].update(delta);
+            Game.GameObjects[i].update(delta);
           }
         }
       }
@@ -599,14 +616,14 @@ var Game =
         //50-55
         for (i = 50; i<55; i++)
         {
-          GameObjects[i].update(delta);
+          Game.GameObjects[i].update(delta);
         }
         //55-60
         if (Game.GameTime>4200)
         {
           for(i=55;i<60;i++)
           {
-            GameObjects[i].update(delta);
+            Game.GameObjects[i].update(delta);
           }
         }
         //60-65
@@ -614,7 +631,7 @@ var Game =
         {
           for(i=60;i<65;i++)
           {
-            GameObjects[i].update(delta);
+            Game.GameObjects[i].update(delta);
           }
         }
         //65-70
@@ -622,7 +639,7 @@ var Game =
         {
           for(i=65;i<70;i++)
           {
-            GameObjects[i].update(delta);
+            Game.GameObjects[i].update(delta);
           }
         }
         //70-75
@@ -630,7 +647,7 @@ var Game =
         {
           for(i=70;i<75;i++)
           {
-            GameObjects[i].update(delta);
+            Game.GameObjects[i].update(delta);
           }
         }
         //75-80
@@ -638,7 +655,7 @@ var Game =
         {
           for(i=75;i<80;i++)
           {
-            GameObjects[i].update(delta);
+            Game.GameObjects[i].update(delta);
           }
         }
       }
@@ -649,14 +666,14 @@ var Game =
         //80-85
         for (i = 80; i<85; i++)
         {
-          GameObjects[i].update(delta);
+          Game.GameObjects[i].update(delta);
         }
         //85-90
         if (Game.GameTime>5500)
         {
           for(i=85;i<90;i++)
           {
-            GameObjects[i].update(delta);
+            Game.GameObjects[i].update(delta);
           }
         }
       }
@@ -668,14 +685,14 @@ var Game =
   
         for (i = 90; i<95; i++)
         {
-          GameObjects[i].update(delta);
+          Game.GameObjects[i].update(delta);
         }
         //95-100
         if (Game.GameTime>6000)
         {
           for(i=95;i<100;i++)
           {
-            GameObjects[i].update(delta);
+            Game.GameObjects[i].update(delta);
           }
         }
       }
@@ -684,6 +701,8 @@ var Game =
 
 };
 
+
+// ------------------------------------------------------------------------------------------------------------------------------
 
 // var Renderer = {
 //   stage: undefined,
@@ -761,22 +780,8 @@ var CollisionDetect =
 
 
  Game.start();
-  
 
 var setupObj = new Game.setup('hello world');
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
