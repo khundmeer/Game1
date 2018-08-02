@@ -441,17 +441,15 @@ var Game =
     //Game.update(delta);
   },
             
-
-
   //Checks if the currentscore has surpassed the previous highscore.
   HighScoreCalc: function(current)
   {
-    Prev_HS = this.Cur_HS;
-    if (current>this.Cur_HS)
+    Prev_HS = Game.Cur_HS;
+    if (current>Game.Cur_HS)
     {
-      this.Cur_HS = current;
+      Game.Cur_HS = current;
     }
-    return this.Cur_HS;
+    return Game.Cur_HS;
   },
 
 
@@ -486,13 +484,7 @@ var Game =
             Game.GameObjects[i].update(delta);
           }
         }
-        // GameObjects.forEach(rect => {
-        //   rec.update(delta);
-        // });
-        // rectangle1.x -= 2;
-        // rectangle2.x -= 3;
-        // rectangle3.x -= 2;
-        // rectangle4.x -= 4;
+
       }
   
       //10-30
@@ -651,7 +643,6 @@ var Game =
       }
   }
   
-
 };
 
 /**This is the collision detection object.
