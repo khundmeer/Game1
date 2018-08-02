@@ -67,7 +67,7 @@ var Game =
 { 
   
   //Game time since start
-  GameTime: 0,
+  GameTime : 0,
   app : undefined,
   //Width of the screen, perhaps should be window.width
   w : screen.width,
@@ -75,7 +75,7 @@ var Game =
   //Main Screen of the game
   AppWidth : 600,
   AppHeight : 400,
-  player: undefined,
+  player : undefined,
   //Array that stores Game and Text Objects
   GameObjects : [],
   TextObjects : [],
@@ -83,6 +83,7 @@ var Game =
   //Current and High Score
   CurrentScore : 0,
   HighScore : 0,
+  ScoreMessage : undefined,
 
   //----------------------------------------------------------------------------------------------Above Variables/ Below Keyboard FUnction
 
@@ -145,24 +146,26 @@ var Game =
            
       // ------------------------------------------------------------------------
       
-      let ScoreStyle = new PIXI.TextStyle(
-      {
-        fontFamily: "Arial",
-        fontSize: 22,
-        fill: "white",
-        stroke: '#ffffff',
-        strokeThickness: .5,
-        dropShadow: false,
-        dropShadowColor: "#000000",
-        dropShadowBlur: 2,
-        dropShadowAngle: Math.PI / 6,
-        dropShadowDistance: 6,
-      });
-        
-      let DispScore = new PIXI.Text("Score", ScoreStyle);
-      Game.app.stage.addChild(DispScore);
 
-      DispScore.position.set((this.AppWidth/2 -(DispScore.width/2)),40);
+
+      // let ScoreStyle = new PIXI.TextStyle(
+      // {
+      //   fontFamily: "Arial",
+      //   fontSize: 22,
+      //   fill: "white",
+      //   stroke: '#ffffff',
+      //   strokeThickness: .5,
+      //   dropShadow: false,
+      //   dropShadowColor: "#000000",
+      //   dropShadowBlur: 2,
+      //   dropShadowAngle: Math.PI / 6,
+      //   dropShadowDistance: 6,
+      // });
+        
+      // let DispScore = new PIXI.Text("Score", ScoreStyle);
+      // Game.app.stage.addChild(DispScore);
+
+      // DispScore.position.set((this.AppWidth/2 -(DispScore.width/2)),40);
 
       // ------------------------------------------------------------------------
 
@@ -180,11 +183,13 @@ var Game =
         dropShadowDistance: 6,
       });
         
-        let DispHS = new PIXI.Text("High Score", HS_Style);
-        Game.app.stage.addChild(DispHS);
-  
-        DispHS.position.set((this.AppWidth/3 -(DispHS.width/2)),40);
-        Game.GameObjects = new this.AllRects();
+      let DispHS = new PIXI.Text("", HS_Style);
+      Game.app.stage.addChild(DispHS);
+      
+      Game.ScoreMessage = DispHS;
+
+      DispHS.position.set((this.AppWidth/3 -(DispHS.width/2)),40);
+      Game.GameObjects = new this.AllRects();
 
 
     return Game.app;
@@ -196,7 +201,7 @@ var Game =
   {
     let newRec = new PIXI.Graphics();
 
-    var color = isEnemy? 0x66CCFF : 0xFF3300;//ternary operator
+    var color = isEnemy? 0xFF3300 : 0x66CCFF ;//ternary operator
 
     newRec.beginFill(color);
     newRec.lineStyle(4, color, 1);
@@ -214,6 +219,7 @@ var Game =
     newRec.x -= newRec.vx;
     }
     newRec.isEnemy = isEnemy;//true/false
+    newRec.isDestroyed = false;
 
     //Creating a rectangle below.
     // let rectangle = new PIXI.Graphics();
@@ -244,7 +250,7 @@ var Game =
       
       if(i%5==0)
       {
-        yPos = 0;
+        yPos = 80;
         ranNum = Math.floor(Math.random() * 5);
       }
       else
@@ -253,7 +259,7 @@ var Game =
       }
 
       //      CreateRect         (yPos, Speed, Value)
-       latestRect = new Game.CreateRect(yPos,Speed_Array[i],Value, i%5 == ranNum);
+       latestRect = new Game.CreateRect(yPos,Speed_Array[i],Value, i%5 != ranNum);
       
       // if (i<5)
       // {
@@ -305,8 +311,12 @@ var Game =
     }
     return Speeds_of_rects;
   },
-  CurrentScore: function(delta)
-  {},
+  Current_Score: function(x)
+  {
+    Game.CurrentScore += x;
+    console.log(Game.CurrentScore);
+    return Game.CurrentScore;
+  },
 
   //----------------------------------------------------------------------------------------Above Add_Speed Function/ Below setup Function
 
@@ -324,9 +334,11 @@ var Game =
         right = keyboard(39),
         down = keyboard(40);
     
+    var Player_Speed = 4;
+    
     left.press = () => {
         //Change the rectangle's velocity when the key is pressed
-        Game.player.vx = -3;
+        Game.player.vx = -Player_Speed;
         Game.player.vy = 0;
       };
       
@@ -342,7 +354,7 @@ var Game =
     
       //Up
       up.press = () => {
-        Game.player.vy = -3;
+        Game.player.vy = -Player_Speed;
         Game.player.vx = 0;
       };
       up.release = () => {
@@ -353,7 +365,7 @@ var Game =
     
       //Right
       right.press = () => {
-        Game.player.vx = 3;
+        Game.player.vx = Player_Speed;
         Game.player.vy = 0;
       };
       right.release = () => {
@@ -364,7 +376,7 @@ var Game =
     
       //Down
       down.press = () => {
-        Game.player.vy = 3;
+        Game.player.vy = Player_Speed;
         Game.player.vx = 0;
       };
       down.release = () => {
@@ -395,7 +407,8 @@ var Game =
     {
       
       // app.stage.addChild(message);
-      Game.app.stage.removeChild(Game.GameMessage)
+      Game.app.stage.removeChild(Game.GameMessage);
+      Game.ScoreMessage.text = "High Score: " + Game.HighScore  +"\nScore: " + Game.CurrentScore;
       //message.position.set((AppWidth/2 -(message.width/2)),(AppHeight/2 -(message.height/2 - message.height/2)));
       //console.log(Game.GameTime);
     }
@@ -403,52 +416,55 @@ var Game =
     if(Game.GameTime>200 && Game.GameTime < 250)
     {
 
-          for (i = 0; i<10; i++)
-          {
-            Game.app.stage.addChild(Game.GameObjects[i]);
-            // app.stage.addChild(Rects[0]);
-          }  
-          for (i = 10; i<30; i++)
-          {
-            Game.app.stage.addChild(Game.GameObjects[i]);
-            // app.stage.addChild(Rects[0]);
-          }
-          for (i = 30; i<50; i++)
-          {
-            Game.app.stage.addChild(Game.GameObjects[i]);
-            // app.stage.addChild(Rects[0]);
-          }
-          for (i = 50; i<80; i++)
-          {
-            Game.app.stage.addChild(Game.GameObjects[i]);
-            // app.stage.addChild(Rects[0]);
-          }
-          for (i = 80; i<90; i++)
-          {
-            Game.app.stage.addChild(Game.GameObjects[i]);
-            // app.stage.addChild(Rects[0]);
-          }
-          for (i = 90; i<100; i++)
-          {
-            Game.app.stage.addChild(Game.GameObjects[i]);
-            // app.stage.addChild(Rects[0]);
-          }
+      for (i = 0; i<10; i++)
+      {
+        Game.app.stage.addChild(Game.GameObjects[i]);
+        // app.stage.addChild(Rects[0]);
+      }  
+      for (i = 10; i<30; i++)
+      {
+        Game.app.stage.addChild(Game.GameObjects[i]);
+        // app.stage.addChild(Rects[0]);
+      }
+      for (i = 30; i<50; i++)
+      {
+        Game.app.stage.addChild(Game.GameObjects[i]);
+        // app.stage.addChild(Rects[0]);
+      }
+      for (i = 50; i<80; i++)
+      {
+        Game.app.stage.addChild(Game.GameObjects[i]);
+        // app.stage.addChild(Rects[0]);
+      }
+      for (i = 80; i<90; i++)
+      {
+        Game.app.stage.addChild(Game.GameObjects[i]);
+        // app.stage.addChild(Rects[0]);
+      }
+      for (i = 90; i<100; i++)
+      {
+        Game.app.stage.addChild(Game.GameObjects[i]);
+        // app.stage.addChild(Rects[0]);
+      }
     }
+    
 
-     
-    
-    
     for(i = 0; i<Game.GameObjects.length;i++)
     {
-      var o =Game.GameObjects[i];
-      if (CollisionDetect.hitRectangle(Game.player,o))
+      let cur_obj = Game.GameObjects[i];
+      
+      if (!cur_obj.isDestroyed && CollisionDetect.hitRectangle(Game.player,cur_obj))
       {
-        if(o.isEnemy){
+        cur_obj.isDestroyed = true;
+        if(cur_obj.isEnemy){
            console.log("We have a hit") ;
-           Game.app.stage.removeChild(Game.player);
-           Game.app.stage.removeChild(o);
+          //  Game.app.stage.removeChild(Game.player);
+           Game.app.stage.removeChild(cur_obj);
+           Game.Current_Score(-5);
         }
         else {
+          Game.app.stage.removeChild(cur_obj);
+          Game.Current_Score(10);
           //score
         }
       }  
@@ -508,13 +524,13 @@ var Game =
 
 
     if(Game.player.x >= 0 && (Game.player.x + Game.player.vx) >= 0){
-      Game.player.x += Game.player.vx;
+      Game.player.x += Game.player.vx * delta;
     }
     else 
     {
       Game.player.x = 0;
     }
-    Game.player.y += Game.player.vy;
+    Game.player.y += Game.player.vy * delta;
       //rectangle.vx = 1;
       //rectangle.vy = 1;
       //Move the rectangle 1 pixel 
