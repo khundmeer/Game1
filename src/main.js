@@ -67,6 +67,7 @@ var Game =
   CurrentScore : 0,
   HighScore : 0,
   ScoreMessage : undefined,
+  EndMessage : undefined,
 
   //----------------------------------------------------------------------------------------------Above Variables
 
@@ -92,7 +93,7 @@ var Game =
     
     //------------------------------------------------------------------------
 
-    //Create Welcome to my game text
+    //Create Are you ready to Lose text
     let style = new PIXI.TextStyle(
     {
       fontFamily: "Arial",
@@ -107,10 +108,9 @@ var Game =
       dropShadowDistance: 6,
     });
       
-      Game.GameMessage = new PIXI.Text("Are You Ready To Lose?", style);
+      Game.GameMessage = new PIXI.Text("", style);
       Game.app.stage.addChild(Game.GameMessage);
 
-      Game.GameMessage.position.set((Game.AppWidth/2 -(Game.GameMessage.width/2)),0);
       // (AppHeight/2 -(message.height/2 - message.height/2))
       // console.log(message.height);
 
@@ -126,11 +126,10 @@ var Game =
       player.y=this.AppHeight/2;
       Game.app.stage.addChild(player);
       Game.player= player;
-           
-      // ------------------------------------------------------------------------
       
 
-
+      // ------------------------------------------------------------------------
+      
       // let ScoreStyle = new PIXI.TextStyle(
       // {
       //   fontFamily: "Arial",
@@ -168,12 +167,11 @@ var Game =
         
       let DispHS = new PIXI.Text("", HS_Style);
       Game.app.stage.addChild(DispHS);
-      
+
       Game.ScoreMessage = DispHS;
 
       DispHS.position.set((this.AppWidth/3 -(DispHS.width/2)),40);
       Game.GameObjects = new this.AllRects();
-
 
     return Game.app;
   },
@@ -362,22 +360,33 @@ var Game =
   //----------------------------------------------------------------------------------------Above setup Function/ Below update Function
   update: function(delta)
   {
+
     Game.GameTime += delta;
-    // player1.score--;
-    // player1.update(delta);
+    Game.end();
+
+    Game.ScoreMessage.text = "High Score: " + Game.HighScore  +"\nScore: " + Game.CurrentScore;
+
+    //player1.score--;
+    //player1.update(delta);
     //gameLoop.time += delta;
     //console.log(Game.GameTime);
-    if (Game.GameTime>200)
+    if(Game.GameTime>0 && Game.GameTime<200)
     {
-      
-      // app.stage.addChild(message);
-      Game.app.stage.removeChild(Game.GameMessage);
-      Game.ScoreMessage.text = "High Score: " + Game.HighScore  +"\nScore: " + Game.CurrentScore;
-      //message.position.set((AppWidth/2 -(message.width/2)),(AppHeight/2 -(message.height/2 - message.height/2)));
-      //console.log(Game.GameTime);
+      Game.GameMessage.text = "Are You Ready To Lose?";
+      Game.GameMessage.position.set((Game.AppWidth/2 -(Game.GameMessage.width/2)),0);
     }
 
-    if(Game.GameTime>200 && Game.GameTime < 250)
+    // if (Game.GameTime>200 && Game.GameTime<205)
+    // {
+          
+    //   Game.GameMessage.text = "";
+              
+      
+    //   //message.position.set((AppWidth/2 -(message.width/2)),(AppHeight/2 -(message.height/2 - message.height/2)));
+    //   //console.log(Game.GameTime);
+    // }
+
+    if(Game.GameTime>210 && Game.GameTime < 250)
     {
 
       for (i = 0; i<10; i++)
@@ -440,7 +449,7 @@ var Game =
     
     //Game.update(delta);
   },
-            
+  
   //Checks if the currentscore has surpassed the previous highscore.
   HighScoreCalc: function(current)
   {
@@ -641,8 +650,23 @@ var Game =
           }
         }
       }
-  }
+  },
   
+  end: function()
+  {
+    if(Game.CurrentScore<0)
+    {
+      Game.app.stage.removeChild(Game.player);
+      for (i=0;i<Game.GameObjects.length;i++)
+      {
+        Game.app.stage.removeChild(Game.GameObjects[i]);
+        
+      }
+      Game.GameMessage.text = "HAHAHA You Lost!";
+      Game.GameMessage.position.set((this.AppWidth/3 -(Game.GameMessage.width/2)),0);
+    }
+  
+  }
 };
 
 /**This is the collision detection object.
