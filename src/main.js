@@ -18,46 +18,46 @@ app.view.style.top = MiddleTop;
 app.view.style.position = "relative";
 app.renderer.autoResize = true;
 
-function keyboard(keyCode) 
-  {
-    let key = {};//constructor
-    key.code = keyCode; 
-    key.isDown = false;
-    key.isUp = true;
-    key.press = undefined;
-    key.release = undefined;
-    //The `downHandler`
-    key.downHandler = event => {
-      if (event.keyCode === key.code) {
-        if (key.isUp && key.press) key.press();
-        key.isDown = true;
-        key.isUp = false;
-        //only prev default inside the designated key
-      event.preventDefault();
-      }
+// function keyboard(keyCode) 
+//   {
+//     let key = {};//constructor
+//     key.code = keyCode; 
+//     key.isDown = false;
+//     key.isUp = true;
+//     key.press = undefined;
+//     key.release = undefined;
+//     //The `downHandler`
+//     key.downHandler = event => {
+//       if (event.keyCode === key.code) {
+//         if (key.isUp && key.press) key.press();
+//         key.isDown = true;
+//         key.isUp = false;
+//         //only prev default inside the designated key
+//       event.preventDefault();
+//       }
       
-    };
+//     };
   
-    //The `upHandler`
-    key.upHandler = event => {
-      if (event.keyCode === key.code) {
-        if (key.isDown && key.release) key.release();
-        key.isDown = false;
-        key.isUp = true;
-        event.preventDefault();
-      }
+//     //The `upHandler`
+//     key.upHandler = event => {
+//       if (event.keyCode === key.code) {
+//         if (key.isDown && key.release) key.release();
+//         key.isDown = false;
+//         key.isUp = true;
+//         event.preventDefault();
+//       }
      
-    };
+//     };
   
-    //Attach event listeners
-    window.addEventListener(
-      "keydown", key.downHandler.bind(key), false
-    );
-    window.addEventListener(
-      "keyup", key.upHandler.bind(key), false
-    );
-    return key;
-  }
+//     //Attach event listeners
+//     window.addEventListener(
+//       "keydown", key.downHandler.bind(key), false
+//     );
+//     window.addEventListener(
+//       "keyup", key.upHandler.bind(key), false
+//     );
+//     return key;
+//   }
 
 var Game =
 { 
@@ -188,6 +188,7 @@ var Game =
 
   //----------------------------------------------------------------------------------------Above Start Function/ Below CreateRect Function
 
+  //This will be in creating friends and enemies
   CreateRect: function (yPos, Speed, Value)
   {
     let newRec = new PIXI.Graphics();
@@ -294,11 +295,13 @@ var Game =
     }
     return Speeds_of_rects;
   },
+
+
   CurrentScore: function(delta)
   {},
 
   //----------------------------------------------------------------------------------------Above Add_Speed Function/ Below setup Function
-
+  
   setup: function (hello) 
   {
     this.id = hello;

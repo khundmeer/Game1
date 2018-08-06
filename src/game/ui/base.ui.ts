@@ -6,7 +6,13 @@ export class GameObj{
     y: number;
     vx: number;
     vy: number;
-    
-    constructor(){};
+    value: number;
+    isDestroyed: boolean;
+    ObjTag: boolean
 
+    constructor(yPos: number, Speed:number){
+    
+    };
+    update(dt)
+    {};
 }

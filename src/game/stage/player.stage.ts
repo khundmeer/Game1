@@ -9,7 +9,7 @@ class PlayerStage extends BaseStage{
         this.leftKey = new Keyboard(37);
 
         this.leftKey.press = () => {
-
+       
         };
     }
 }
