@@ -1,6 +1,6 @@
 import { DisplayObject } from "pixi.js";
 
-export class GameObj{
+export interface IGameObj{
 
     x: number;
     y: number;
@@ -10,9 +10,5 @@ export class GameObj{
     isDestroyed: boolean;
     pixiObject: DisplayObject;
 
-    constructor(yPos: number, Speed:number){
-    
-    };
-    update(dt)
-    {};
+    update(dt);
 }

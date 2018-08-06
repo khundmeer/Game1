@@ -1,10 +1,10 @@
-import { Game } from "./Game/game";
+import { Game } from "./game/game";
 
 console.log("I am away");
 
 
 
-var foo = new Game();
+var foo = new this.pixiObject();
 foo.run(8);
 
 

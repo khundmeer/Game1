@@ -1,16 +1,20 @@
-import {GameObj} from './base.ui';
+import {IGameObj} from './base.ui';
 import { Graphics } from 'pixi.js';
+import{Game} from '../game'
 
+class Frienemy implements IGameObj{
 
-class Frienemy extends GameObj{
-
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    value: number;
+    isDestroyed: boolean;
     isEnemy: boolean;
     pixiObject: Graphics;
 
     constructor(yPos: number, Speed:number, isEnemy: boolean){
-        super(yPos, Speed);
-
-    
+            
         this.pixiObject = new Graphics();
     
         var color = isEnemy? 0xFF3300 : 0x66CCFF ;//ternary operator
@@ -20,8 +24,8 @@ class Frienemy extends GameObj{
         this.pixiObject.drawRect(0, 0, 33, 33);
         this.pixiObject.endFill();
         
-        //?? Note that here we need to access Game.AppWidth
-        //newRec.x = Game.AppWidth;
+        //Resolved: Note that here we need to access Game.AppWidth
+        this.x = Game.AppWidth;
         
         this.y = yPos;
         //newRec.name = Name;
@@ -35,9 +39,9 @@ class Frienemy extends GameObj{
     
         //return newRec;
         
-    };
-     update(dt)
-     {
-     this.x -= this.vx;
-     }
+    }
+    update(dt)
+    {
+        this.x -= this.vx;
+    }
 }

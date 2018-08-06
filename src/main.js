@@ -23,28 +23,28 @@ function keyboard(keyCode)
       event.preventDefault();
       }
       
-//     };
+    };
   
-//     //The `upHandler`
-//     key.upHandler = event => {
-//       if (event.keyCode === key.code) {
-//         if (key.isDown && key.release) key.release();
-//         key.isDown = false;
-//         key.isUp = true;
-//         event.preventDefault();
-//       }
+    //The `upHandler`
+    key.upHandler = event => {
+      if (event.keyCode === key.code) {
+        if (key.isDown && key.release) key.release();
+        key.isDown = false;
+        key.isUp = true;
+        event.preventDefault();
+      }
      
-//     };
+    };
   
-//     //Attach event listeners
-//     window.addEventListener(
-//       "keydown", key.downHandler.bind(key), false
-//     );
-//     window.addEventListener(
-//       "keyup", key.upHandler.bind(key), false
-//     );
-//     return key;
-//   }
+    //Attach event listeners
+    window.addEventListener(
+      "keydown", key.downHandler.bind(key), false
+    );
+    window.addEventListener(
+      "keyup", key.upHandler.bind(key), false
+    );
+    return key;
+  }
 
 var Game =
 { 
@@ -124,6 +124,7 @@ var Game =
       player.endFill();
       player.x=0;
       player.y=this.AppHeight/2;
+      //Add the child later
       Game.app.stage.addChild(player);
       Game.player= player;
       
@@ -674,7 +675,8 @@ var Game =
  **/
 var CollisionDetect = 
 {
-    hitRectangle: function (r1, r2) {
+    hitRectangle: function (r1, r2) 
+    {
 
         //Define the variables we'll need to calculate
         let hit, combinedHalfWidths, combinedHalfHeights, vx, vy;
@@ -723,13 +725,9 @@ var CollisionDetect =
       
         //`hit` will be either `true` or `false`
         return hit;
-      }
+    }
 }
 
 Game.start();
 
 var setupObj = new Game.setup('hello world');
-
-//---------------------------------------------------------------------------------------------------------------------------------------
-// Above this point The real game object exists------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------------------------
