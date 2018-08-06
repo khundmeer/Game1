@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js';
+import { DisplayObject } from "pixi.js";
 
 export class GameObj{
 
@@ -8,7 +8,7 @@ export class GameObj{
     vy: number;
     value: number;
     isDestroyed: boolean;
-    ObjTag: boolean
+    pixiObject: DisplayObject;
 
     constructor(yPos: number, Speed:number){
     

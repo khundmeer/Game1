@@ -1,20 +1,24 @@
 import {GameObj} from './base.ui';
+import { Graphics } from 'pixi.js';
+
 
 class Frienemy extends GameObj{
 
+    isEnemy: boolean;
+    pixiObject: Graphics;
 
-
-    constructor(yPos: number, Speed:number, ObjTag: boolean){
+    constructor(yPos: number, Speed:number, isEnemy: boolean){
         super(yPos, Speed);
+
     
-        let newRec = new PIXI.Graphics();
+        this.pixiObject = new Graphics();
     
-        var color = ObjTag? 0xFF3300 : 0x66CCFF ;//ternary operator
+        var color = isEnemy? 0xFF3300 : 0x66CCFF ;//ternary operator
     
-        newRec.beginFill(color);
-        newRec.lineStyle(4, color, 1);
-        newRec.drawRect(0, 0, 33, 33);
-        newRec.endFill();
+        this.pixiObject.beginFill(color);
+        this.pixiObject.lineStyle(4, color, 1);
+        this.pixiObject.drawRect(0, 0, 33, 33);
+        this.pixiObject.endFill();
         
         //?? Note that here we need to access Game.AppWidth
         //newRec.x = Game.AppWidth;
@@ -22,13 +26,12 @@ class Frienemy extends GameObj{
         this.y = yPos;
         //newRec.name = Name;
         this.vx = Speed;
-        this.value = ObjTag? -5 : 10;
+        this.value = isEnemy? -5 : 10;
 
         //?? Note that this is the vector that should contain the Frienemies
         //Game.GameObjects.push(newRec);
         
-        this.ObjTag = ObjTag;//true/false
-        this.isDestroyed = false;
+        this.isEnemy = isEnemy;//true/false
     
         //return newRec;
         
