@@ -1,19 +1,8 @@
-console.log("I am running");
+import { Game } from "./Game/game";
 
-export class Game {
-    protected a: string = '';
-    b: number = 0;
-
-    constructor() {
-        console.log("I am running again");
-    }
-    run(num:number)
-    {
-        console.log(num);
-    }
+console.log("I am away");
 
 
-}
 
 var foo = new Game();
 foo.run(8);
