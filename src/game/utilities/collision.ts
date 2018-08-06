@@ -1,5 +1,5 @@
 
-class CollisionDetect
+export class CollisionDetect
 {
     static hitRectangle(r1, r2) {
 

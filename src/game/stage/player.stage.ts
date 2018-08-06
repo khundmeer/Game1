@@ -1,6 +1,6 @@
 import {BaseStage} from './base.stage';
+import {CollisionDetect} from '../utilities/collision';
 import {Keyboard} from '../utilities/keyboard';
-
 
 class PlayerStage extends BaseStage{
     leftKey: Keyboard;
