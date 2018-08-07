@@ -4,12 +4,12 @@ import {CollisionDetect} from '../utilities/collision';
 
 class Pause implements IBaseStage
 {
-    
+    isSetup :boolean;
     time: number;
     isOver : boolean;
     
     setup(){}
-    update(dt: number){}
+    update(){}
     
     // this.time += dt;
         // BaseStage.app.addChild();

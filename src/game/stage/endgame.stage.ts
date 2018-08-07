@@ -7,11 +7,11 @@ import {Application} from 'pixi.js'
 class Endgame implements IBaseStage
 {
     time: number;
-   
+    isSetup :boolean;
     isOver : boolean;
     
     setup(){}
-    update(dt: number){}
+    update(){}
     
     // this.time += dt;
         // BaseStage.app.addChild();

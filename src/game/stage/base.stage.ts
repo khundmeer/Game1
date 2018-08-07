@@ -6,8 +6,9 @@ export interface IBaseStage {
 
     time: number;
     isOver : boolean;
+    isSetup :boolean;
     setup();
-    update(dt: number);
+    update();
     
     // this.time += dt;
         // BaseStage.app.addChild();

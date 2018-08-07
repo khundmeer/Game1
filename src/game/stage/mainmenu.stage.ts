@@ -4,7 +4,7 @@ import {CollisionDetect} from '../utilities/collision';
 import * as PIXI from 'pixi.js'
 import {Game} from '../game'
 
-class Mainmenu implements IBaseStage{
+export class Mainmenu implements IBaseStage{
 
     time: number;
     isSetup: boolean;
@@ -47,11 +47,12 @@ class Mainmenu implements IBaseStage{
         Game.app.stage.addChild(GameMessage);
         Game.app.stage.addChild(GameMessage1);
         Game.app.stage.addChild(StartKeyMsg);
+        StartKeyMsg.
         
         this.isSetup = true;
 
         Start.press = () => {
-            this.clearStage();
+            //this.clearStage(); This should be done in the Game.Update
             this.isOver = true;
         }
 
@@ -59,7 +60,7 @@ class Mainmenu implements IBaseStage{
 
     
     }
-    update(dt: number){}
+    update(){}
     
     // this.time += dt;
         // BaseStage.app.addChild();

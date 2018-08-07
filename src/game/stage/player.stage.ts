@@ -5,10 +5,10 @@ import {Keyboard} from '../utilities/keyboard';
 class PlayerStage implements IBaseStage{
     
     time: number;
-   
+    isSetup :boolean;
     isOver : boolean;
     
-    update(dt: number){}
+    update(){}
     
     // this.time += dt;
         // BaseStage.app.addChild();
