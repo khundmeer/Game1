@@ -1,12 +1,11 @@
 import {CollisionDetect} from '../utilities/collision';
 import {Keyboard} from '../utilities/keyboard';
-import {Application} from 'pixi.js'
+import * as PIXI from 'pixi.js'
 
 export interface IBaseStage {
 
     time: number;
     isOver : boolean;
-    
     setup();
     update(dt: number);
     

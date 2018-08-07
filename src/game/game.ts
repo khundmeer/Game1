@@ -37,9 +37,14 @@ export class Game {
         document.body.appendChild(Game.app.view);
 
     }
-    run(num:number)
-    {
-        console.log(num);
-    }
+        setup()
+        {
+            document.body.appendChild(Game.app.view);
+        }
 
+        update(dt)
+        {
+            Game.GameTime += dt;
+            
+        }
 }
