@@ -7,6 +7,7 @@ export class Game {
     b: number = 0;
     static AppWidth: number;
     static AppHeight: number;
+    
     constructor() {
         console.log("I again");
     }

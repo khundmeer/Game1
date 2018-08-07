@@ -468,7 +468,8 @@ var Game =
     //Renderer.update(delta);
 
 
-    if(Game.player.x >= 0 && (Game.player.x + Game.player.vx) >= 0){
+    if(Game.player.x >= 0 && (Game.player.x + Game.player.vx) >= 0)
+    {
       Game.player.x += Game.player.vx * delta;
     }
     else 
