@@ -5,7 +5,6 @@ import {Application} from 'pixi.js'
 export interface IBaseStage {
 
     time: number;
-    app: any;
     isOver : boolean;
     
     setup();

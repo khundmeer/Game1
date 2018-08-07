@@ -6,7 +6,6 @@ class Pause implements IBaseStage
 {
     
     time: number;
-    app: any;
     isOver : boolean;
     
     setup(){}

@@ -1,11 +1,11 @@
 import {IBaseStage} from './base.stage';
 import {Keyboard} from '../utilities/keyboard';
 import {CollisionDetect} from '../utilities/collision';
+import {Application} from 'pixi.js'
 
 class Mainmenu implements IBaseStage{
 
     time: number;
-    app: any;
     isOver : boolean;
     
     setup(){}

@@ -1,8 +1,22 @@
-import {BaseStage} from './base.stage';
+import {IBaseStage} from './base.stage';
 import {CollisionDetect} from '../utilities/collision';
 import {Keyboard} from '../utilities/keyboard';
 
-class PlayerStage extends BaseStage{
+class PlayerStage implements IBaseStage{
+    
+    time: number;
+   
+    isOver : boolean;
+    
+    update(dt: number){}
+    
+    // this.time += dt;
+        // BaseStage.app.addChild();
+    
+    clearStage(){}
+    
+    
+    
     leftKey: Keyboard;
 
     setup() {
