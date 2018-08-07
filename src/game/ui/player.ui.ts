@@ -3,7 +3,7 @@ import { Game } from '../game';
 import { Graphics } from "pixi.js";
 
 
-class Player implements IGameObj{
+export class Player implements IGameObj{
 
     x: number;
     y: number;
@@ -13,7 +13,7 @@ class Player implements IGameObj{
     isDestroyed: boolean;
     pixiObject: Graphics;
 
-    constructor(yPos: number, Speed:number)
+    constructor(yPos: number)
     {
         this.pixiObject = new Graphics();
         this.pixiObject.beginFill(0xFFFF00);

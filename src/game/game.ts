@@ -61,11 +61,10 @@ export class Game {
             this.ActiveStage.update();
         }
         if (this.ActiveStage.isOver) {
-
+            this.ActiveStage.clearStage();
             this.nextStage();
         }
     }
-
 
     addStages() {
 

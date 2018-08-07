@@ -7,6 +7,8 @@ export interface IBaseStage {
     time: number;
     isOver : boolean;
     isSetup :boolean;
+    
+    
     setup();
     update();
     
