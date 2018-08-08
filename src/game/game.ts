@@ -20,7 +20,7 @@ export class Game {
 
     Stages: IBaseStage[];
     ActiveStage: IBaseStage;
-    ActiveStageId: number = 0;
+    ActiveStageId: number = 1;
 
     NumberofRounds: number;
 
@@ -49,7 +49,7 @@ export class Game {
         Game.app.renderer.autoResize = true;
 
         document.body.appendChild(Game.app.view);
-        this.addStages; //adding all the GameStages
+        this.addStages(); //adding all the GameStages
 
         Game.app.ticker.add(delta => this.update(delta));
     }
@@ -70,7 +70,7 @@ export class Game {
 
     addStages() {
 
-        this.Stages = [new Mainmenu(), new ];
+        this.Stages = [new Mainmenu()];
         this.ActiveStage = this.Stages[this.ActiveStageId];
 
         //this.ActiveStage = new Mainmenu();
@@ -82,13 +82,9 @@ export class Game {
 
     nextStage() {
 
-        if (this.ActiveStageId < this.Stages.length) {
-            this.ActiveStage = this.Stages[++this.ActiveStageId];
-        }
-        else {
-            this.ActiveStageId = 0;
-            this.ActiveStage = this.Stages[this.ActiveStageId];
-        }
+        this.ActiveStageId = ++this.ActiveStageId % this.Stages.length;
+
+        this.ActiveStage = this.Stages[this.ActiveStageId];
     }
     //nextStage() { //activeStage = stages[++activeStageId]}
 }

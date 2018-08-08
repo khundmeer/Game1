@@ -1,9 +1,13 @@
 import {IBaseStage} from './base.stage';
+
 import {Keyboard} from '../utilities/keyboard';
 import {CollisionDetect} from '../utilities/collision';
+import {Game} from '../game';
+
 import {IGameObj} from '../ui/base.ui'
 import {Player} from '../ui/player.ui';
 import {Frienemy} from '../ui/frienemy.ui'
+
 
 class Play implements IBaseStage
 {
@@ -11,15 +15,17 @@ class Play implements IBaseStage
     isSetup :boolean;
     isOver : boolean;
     player;
-    GameObjects : Frienemy[] = [];
+    Frienemies : Frienemy[] = [];
+
+
     private NumberOfEnemies = 5;
-    Speed: number = 3;
-    SpeedVariant: number = 2;
-    PositionofFrienemy: number;
-    Speeds: number[];
+    NumofRounds: number;
+    CurrentRound: number;
+    yPosOfFrienemies: number = 40;
+    
     constructor(Rounds: number)
     {
-        
+        this.Rounds = Rounds;
         //var NumofSpeeds = Rounds * 5;
         // for ()
         // {
@@ -32,10 +38,21 @@ class Play implements IBaseStage
     setup()
     {
         this.player = new Player(100);
+        
 
+        var RandomNum = Math.floor(Math.random() * this.Frienemies.length);
         for(var i = 0; i< this.NumberOfEnemies; i++)
         {
-            this.GameObjects.push(new Frienemy());
+            this.Frienemies.push(
+                new Frienemy(this.NumofRounds,
+                             this.yPosOfFrienemies,
+                             this.CurrentRound,
+                             i%5 != RandomNum)
+            );
+        }
+        for(var i =0; i<this.Frienemies.length; i++)
+        {
+            Game.app.stage.addChild(this.Frienemies[i]);
         }
     }
 
@@ -54,5 +71,11 @@ class Play implements IBaseStage
 
     
     //Clear the player along with the Frienemies.
-    clearStage(){}
+    clearStage()
+    {
+        for(var i =0; i<this.Frienemies.length; i++)
+        {
+            Game.app.stage.removeChild(this.Frienemies[i]);
+        }
+    }
 }

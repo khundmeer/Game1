@@ -23,6 +23,11 @@ export class Player implements IGameObj{
         this.pixiObject.endFill();
         this.pixiObject.x = 0;
         this.pixiObject.y = Game.AppHeight/2;
+
+        //keyboard kys
+
+
+
     }
     update(dt)
     {
