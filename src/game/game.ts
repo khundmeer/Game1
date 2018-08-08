@@ -2,7 +2,7 @@ import { IGameObj } from "./ui/base.ui";
 import * as PIXI from 'pixi.js'
 import { IBaseStage } from "./stage/base.stage";
 import { Mainmenu } from "./stage/mainmenu.stage";
-
+import {PlayStage} from './stage/play.stage'
 
 export class Game {
 
@@ -70,7 +70,7 @@ export class Game {
 
     addStages() {
 
-        this.Stages = [new Mainmenu()];
+        this.Stages = [new Mainmenu(), new PlayStage(5)];
         this.ActiveStage = this.Stages[this.ActiveStageId];
 
         //this.ActiveStage = new Mainmenu();

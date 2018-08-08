@@ -27,11 +27,14 @@ export class Frienemy implements IGameObj {
 
         //Resolved: Note that here we need to access Game.AppWidth
 
-        this.pixiObject.y = yPos;
+        this.y = yPos;
         this.RoundInit(CurrRoundNum, isEnemy);
     }
-    update(dt) {
-        this.pixiObject.x -= this.vx;
+    update() {
+        this.x -= this.vx;
+
+        this.pixiObject.x = this.x;
+        this.pixiObject.y = this.y;
     }
 
     RoundInit(CurrRoundNum: number, isEnemy:boolean)
@@ -42,20 +45,21 @@ export class Frienemy implements IGameObj {
     }
 
     private positionReset() {
-        this.pixiObject.x = Game.AppWidth + 10;
+        this.x = Game.AppWidth + 10;
 
     }
 
     private ChangeEnemyStatus(isEnemy: boolean) {
 
-
+        this.value = isEnemy? -5 : 10;
         var color = isEnemy? 0xFF3300 : 0x66CCFF;//ternary operator    
-//??
+//??    
         this.pixiObject.beginFill(color);
         this.pixiObject.lineStyle(4, color, 1);
         this.pixiObject.drawRect(0, 0, 33, 33);
         this.pixiObject.endFill();
     }
+//Need to do Change Speed
     private ChangeSpeed(CurrRoundNum: number) {
 
       
