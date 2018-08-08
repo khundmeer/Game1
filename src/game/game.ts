@@ -22,6 +22,8 @@ export class Game {
     ActiveStage: IBaseStage;
     ActiveStageId: number = 0;
 
+    NumberofRounds: number;
+
     constructor() {
         console.log("In the constructor");
     }
@@ -68,7 +70,7 @@ export class Game {
 
     addStages() {
 
-        this.Stages = [new Mainmenu()];
+        this.Stages = [new Mainmenu(), new ];
         this.ActiveStage = this.Stages[this.ActiveStageId];
 
         //this.ActiveStage = new Mainmenu();

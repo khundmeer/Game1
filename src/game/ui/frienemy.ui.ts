@@ -2,22 +2,35 @@ import { IGameObj } from './base.ui';
 import { Graphics } from 'pixi.js';
 import { Game } from '../game'
 
-class Frienemy implements IGameObj {
+export class Frienemy implements IGameObj {
 
     x: number;
     y: number;
     vx: number;
     vy: number;
+
     value: number;
+
+    MaxSpeed: number = 25;
+    MinSpeed: number = 3;
+    PercentSpeedPerRound: number;
+
     isDestroyed: boolean;
     isEnemy: boolean;
     pixiObject: Graphics;
-    
-    constructor(yPos: number, Speed: number, isEnemy?: boolean) {
+
+
+
+    setEnemyRound(roundNumber: number, yPos?: number, Speed?: number, isEnemy?: boolean) {
 
         this.pixiObject = new Graphics();
-        if(isEnemy)
-        var color = isEnemy ? 0xFF3300 : 0x66CCFF;//ternary operator
+
+        if (isEnemy == true || isEnemy == false) {
+            var color = isEnemy ? 0xFF3300 : 0x66CCFF;//ternary operator    
+        }
+        else {
+            color = 0xFF3300;
+        }
 
         this.pixiObject.beginFill(color);
         this.pixiObject.lineStyle(4, color, 1);
@@ -43,23 +56,34 @@ class Frienemy implements IGameObj {
     update(dt) {
         this.x -= this.vx;
 
-        if (this.x <= 0)
-        {
+        if (this.x <= 0) {
             this.positionReset();
         }
     }
 
-    positionReset() {
+    RoundInit()
+    {
+        this.positionReset();
+        this.ChangeEnemyStatus();
+        this.ChangeSpeed();
+    }
+
+    private positionReset() {
         this.x = Game.AppWidth + 10;
 
     }
 
-    ChangeEnemyStatus()
-    {
+    private ChangeEnemyStatus() {
 
+        this.pixiObject.beginFill(0x66CCFF);
+        this.pixiObject.lineStyle(4, 0x66CCFF, 1);
         // this.isEnemy = false;
         // this.pixiObject.beginFill(color);
         // this.pixiObject.lineStyle(4, color, 1);
+    }
+    private ChangeSpeed() {
+
+      
     }
 
 

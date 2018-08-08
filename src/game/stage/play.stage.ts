@@ -1,8 +1,9 @@
 import {IBaseStage} from './base.stage';
 import {Keyboard} from '../utilities/keyboard';
 import {CollisionDetect} from '../utilities/collision';
+import {IGameObj} from '../ui/base.ui'
 import {Player} from '../ui/player.ui';
-
+import {Frienemy} from '../ui/frienemy.ui'
 
 class Play implements IBaseStage
 {
@@ -10,17 +11,38 @@ class Play implements IBaseStage
     isSetup :boolean;
     isOver : boolean;
     player;
-
-    constructor()
+    GameObjects : Frienemy[] = [];
+    private NumberOfEnemies = 5;
+    Speed: number = 3;
+    SpeedVariant: number = 2;
+    PositionofFrienemy: number;
+    Speeds: number[];
+    constructor(Rounds: number)
     {
-        this.player = new Player(100);
+        
+        //var NumofSpeeds = Rounds * 5;
+        // for ()
+        // {
+        //     this.Speeds.push(
+        //        (Math.floor(Math.random() * this.Speed)+this.SpeedVariant++)
+        //     );
+        // }
     }
+
     setup()
     {
+        this.player = new Player(100);
+
+        for(var i = 0; i< this.NumberOfEnemies; i++)
+        {
+            this.GameObjects.push(new Frienemy());
+        }
+    }
+
+    update()
+    {
 
     }
-    update(){}
-    
     //Create Frienemies
     //Create Player
     //Create Speeds
