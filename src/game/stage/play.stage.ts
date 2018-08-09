@@ -21,6 +21,7 @@ export class PlayStage implements IBaseStage {
     NumofRounds: number;
     CurrentRoundNum: number;
     yPosOfFrienemies: number = 80;
+    static didWin: boolean;
 
     constructor(NumofRounds: number) {
         this.NumofRounds = NumofRounds;
@@ -69,6 +70,7 @@ export class PlayStage implements IBaseStage {
                 {
                     Game.app.stage.removeChild(this.player.pixiObject);
                     this.isOver = true;//lose
+                    PlayStage.didWin = false;
                 }
             }
 
@@ -84,6 +86,7 @@ export class PlayStage implements IBaseStage {
         if (this.CurrentRoundNum>this.NumofRounds)
         {
             this.isOver = true;//Win
+            PlayStage.didWin = true;
             this.clearStage();
         }
     }
