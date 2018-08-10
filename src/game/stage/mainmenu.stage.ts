@@ -9,11 +9,12 @@ export class Mainmenu implements IBaseStage {
     time: number;
     isSetup: boolean;
     isOver: boolean;
-    GameMessage; //PIXI.Text;
+    GameMessage : PIXI.Text;
     GameMessage1;
     StartKeyMsg;
 
     setup() {
+
         let Start = new Keyboard(83);//s
         // up = new Keyboard(38),
         // right = new Keyboard(39),
@@ -43,9 +44,9 @@ export class Mainmenu implements IBaseStage {
         Game.app.stage.addChild(this.GameMessage1);
         Game.app.stage.addChild(this.StartKeyMsg);
 
-        this.GameMessage.position.set(Game.AppWidth, 40);
-        this.GameMessage1.position.set(Game.AppWidth, 90);
-        this.StartKeyMsg.position.set(Game.AppWidth, 120);
+        this.GameMessage.position.set(Game.AppWidth/2 - this.GameMessage.width/2, 0);
+        this.GameMessage1.position.set(Game.AppWidth/2 - this.GameMessage1.width/2, 90);
+        this.StartKeyMsg.position.set(Game.AppWidth/2 - this.StartKeyMsg.width/2, 180);
 
 
 
@@ -62,7 +63,7 @@ export class Mainmenu implements IBaseStage {
 
 
     }
-    update() { }
+    update(dt) { }
 
     // this.time += dt;
     // BaseStage.app.addChild();
@@ -73,6 +74,8 @@ export class Mainmenu implements IBaseStage {
         Game.app.stage.removeChild(this.GameMessage1);
         Game.app.stage.removeChild(this.StartKeyMsg);
 
+        this.isSetup = false;
+        this.isOver = false;
     }
 
     //Game.app.ticker.add(delta => Game.update(delta));

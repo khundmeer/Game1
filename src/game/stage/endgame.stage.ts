@@ -10,11 +10,13 @@ export class Endgame implements IBaseStage {
     isSetup: boolean;
     isOver: boolean;
     EndMessage: PIXI.Text;
-    didWin: boolean = PlayStage.didWin;
+    PositionX : number;
+    PositionY : number;
     constructor() {
 
     }
     setup() {
+        console.log("In Endgame setup");
         let style = new PIXI.TextStyle(
         {
             fontFamily: "Arial",
@@ -31,7 +33,7 @@ export class Endgame implements IBaseStage {
         this.EndMessage = new PIXI.Text("",style);
         Game.app.stage.addChild(this.EndMessage);
 
-        if (this.didWin)
+        if (Game.didWin)//PlayStage.didWin)
         {
             this.EndMessage.text = "Congratulations! Your Visa Has Been Approved";
         }
@@ -40,10 +42,13 @@ export class Endgame implements IBaseStage {
             this.EndMessage.text = "We Are Sorry! Your Visa Has Been Denied";
         }
         this.EndMessage.position.set((Game.AppWidth/3) -(this.EndMessage.width/2),0);
+        this.isSetup = true;
 
+        setTimeout(() => {
+            this.isOver = true;
+        }, 5000);
     }
-    update(){
-
+    update(dt){
     }
 
     // this.time += dt;
@@ -51,6 +56,9 @@ export class Endgame implements IBaseStage {
 
     clearStage() {
         Game.app.stage.removeChild(this.EndMessage);
+        this.isSetup = false;
+        this.isOver = false;
+        Game.didWin = undefined;
      }
 
 }

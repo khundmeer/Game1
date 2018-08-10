@@ -13,6 +13,10 @@ export class Player implements IGameObj{
     isDestroyed: boolean;
     pixiObject: Graphics;
     Player_Speed: number = 4;
+    left : Keyboard = new Keyboard(37);
+    up : Keyboard = new Keyboard(40);
+    right : Keyboard = new Keyboard(39);
+    down : Keyboard = new Keyboard(38);
 
     constructor(yPos: number)
     {
@@ -25,59 +29,54 @@ export class Player implements IGameObj{
         this.pixiObject.x = 0;
         this.pixiObject.y = Game.AppHeight/2;
 
-        //keyboard kys
-        let left = new Keyboard(37),
-        up = new Keyboard(38),
-        right = new Keyboard(39),
-        down = new Keyboard(40);
+        //keyboard kys   
     
     
-    
-    left.press = () => {
+    this.left.press = () => {
         //Change the rectangle's velocity when the key is pressed
         this.vx = -this.Player_Speed;
         this.vy = 0;
       };
       
       //Left arrow key `release` method
-      left.release = () => {
+      this.left.release = () => {
         //If the left arrow has been released, and the right arrow isn't down,
         //and the rectangle isn't moving vertically:
         //Stop the rectangle
-        if (!right.isDown && this.vy === 0) {
+        if (!this.right.isDown && this.vy === 0) {
             this.vx = 0;
         }
       };
     
       //Up
-      up.press = () => {
-        this.vy = -this.Player_Speed;
+      this.up.press = () => {
+        this.vy = this.Player_Speed;
         this.vx = 0;
       };
-      up.release = () => {
-        if (!down.isDown && this.vx === 0) {
+      this.up.release = () => {
+        if (!this.down.isDown && this.vx === 0) {
             this.vy = 0;
         }
       };
     
       //Right
-      right.press = () => {
+      this.right.press = () => {
         this.vx = this.Player_Speed;
         this.vy = 0;
       };
-      right.release = () => {
-        if (!left.isDown && this.vy === 0) {
+      this.right.release = () => {
+        if (!this.left.isDown && this.vy === 0) {
             this.vx = 0;
         }
       };
     
       //Down
-      down.press = () => {
-        this.vy = this.Player_Speed;
+      this.down.press = () => {
+        this.vy = -(this.Player_Speed);
         this.vx = 0;
       };
-      down.release = () => {
-        if (!up.isDown && this.vx === 0) {
+      this.down.release = () => {
+        if (!this.up.isDown && this.vx === 0) {
             this.vy = 0;
         }
       };
@@ -95,14 +94,13 @@ export class Player implements IGameObj{
             this.pixiObject.x = 0;
         }
         
-        if(this.pixiObject.y>0 && (this.pixiObject.y + this.vx) >=0)
+        if(this.pixiObject.y>=0 && (this.pixiObject.y + this.vy) >=0)
         {
             this.pixiObject.y += this.vy * dt;
         }
         else
         {
-            this.pixiObject.y = 0;
-
+             this.pixiObject.y = 0;
         }
     }
 }

@@ -11,7 +11,7 @@ export class Frienemy implements IGameObj {
 
     value: number;
 
-    MaxSpeed: number = 25;
+    MaxSpeed: number = 15;
     MinSpeed: number = 3;
     PercentSpeedPerRound: number;
 
@@ -24,15 +24,15 @@ export class Frienemy implements IGameObj {
         this.pixiObject = new Graphics();
         this.PercentSpeedPerRound = this.MaxSpeed/NumofRounds;
 
-
         //Resolved: Note that here we need to access Game.AppWidth
 
         this.y = yPos;
         this.RoundInit(CurrRoundNum, isEnemy);
     }
-    update() {
+    update(dt) {
         this.x -= this.vx;
 
+        
         this.pixiObject.x = this.x;
         this.pixiObject.y = this.y;
     }
@@ -42,11 +42,14 @@ export class Frienemy implements IGameObj {
         this.positionReset();
         this.ChangeEnemyStatus(isEnemy);
         this.ChangeSpeed(CurrRoundNum);
+
+        this.isDestroyed = false;
+
     }
 
     private positionReset() {
         this.x = Game.AppWidth + 10;
-
+        this.pixiObject.x = this.x;
     }
 
     private ChangeEnemyStatus(isEnemy: boolean) {
@@ -61,7 +64,19 @@ export class Frienemy implements IGameObj {
     }
 //Need to do Change Speed
     private ChangeSpeed(CurrRoundNum: number) {
-
+        
+        var tempSpeed = (Math.random() * 6) + (this.PercentSpeedPerRound * CurrRoundNum);
+        if (tempSpeed > this.MaxSpeed){
+            this.vx = this.MaxSpeed + (Math.random() * this.MinSpeed);
+        }
+        else if (tempSpeed < this.MinSpeed){
+            this.vx = this.MinSpeed + (Math.random() * this.MinSpeed);
+        }
+        else
+        {
+            this.vx = tempSpeed;
+        }    
+        
       
     }
 

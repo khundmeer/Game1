@@ -1,6 +1,6 @@
 import { Game } from "./game/game";
 
-console.log("I am away");
+console.log('B4 game is created');
 
 
 var latest = new Game();
@@ -8,6 +8,7 @@ var latest = new Game();
 
 document.addEventListener("DOMContentLoaded", () => {
     latest.setup();
+    //latest.update();
 });
 
 //number string boolean

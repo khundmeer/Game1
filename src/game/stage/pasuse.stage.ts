@@ -8,8 +8,10 @@ class Pause implements IBaseStage
     time: number;
     isOver : boolean;
     
-    setup(){}
-    update(){}
+    setup(){
+        //var PauseKey = new Keyboard();
+    }
+    update(dt){}
     
     // this.time += dt;
         // BaseStage.app.addChild();

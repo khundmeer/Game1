@@ -1,8 +1,10 @@
 import { IGameObj } from "./ui/base.ui";
 import * as PIXI from 'pixi.js'
 import { IBaseStage } from "./stage/base.stage";
+
 import { Mainmenu } from "./stage/mainmenu.stage";
 import {PlayStage} from './stage/play.stage'
+import { Endgame } from "./stage/endgame.stage";
 
 export class Game {
 
@@ -12,23 +14,21 @@ export class Game {
     ScreenWidth: number = window.innerWidth;
     ScreenHeight: number = window.innerHeight;
 
-    static AppWidth: number = 50;
-    static AppHeight: number = 50;
+    static AppWidth: number = 600;
+    static AppHeight: number = 400;
 
-    static CurrentScore: number;
+    static CurrentScore: number = 0;
     static HighScore: number;
-
+    static didWin: boolean;
     Stages: IBaseStage[];
     ActiveStage: IBaseStage;
-    ActiveStageId: number = 1;
+    ActiveStageId: number = 0;
 
-    NumberofRounds: number;
+    NumberofRounds: number = 3;
 
     constructor() {
-        console.log("In the constructor");
     }
     setup() {
-        console.log('In the Game:setup');
 
         let type = "WebGL"
         if (!PIXI.utils.isWebGLSupported()) {
@@ -49,28 +49,29 @@ export class Game {
         Game.app.renderer.autoResize = true;
 
         document.body.appendChild(Game.app.view);
+        //Works
         this.addStages(); //adding all the GameStages
-
+        //Somthing is wrong here
         Game.app.ticker.add(delta => this.update(delta));
     }
 
     update(dt) {
-
+        
         if (!this.ActiveStage.isSetup) {
             this.ActiveStage.setup();
         }
         else {
-            this.ActiveStage.update();
+            this.ActiveStage.update(dt);
         }
         if (this.ActiveStage.isOver) {
             this.ActiveStage.clearStage();
             this.nextStage();
         }
+
     }
 
     addStages() {
-
-        this.Stages = [new Mainmenu(), new PlayStage(5)];
+        this.Stages = [new Mainmenu(), new PlayStage(this.NumberofRounds), new Endgame()];
         this.ActiveStage = this.Stages[this.ActiveStageId];
 
         //this.ActiveStage = new Mainmenu();
@@ -81,7 +82,6 @@ export class Game {
     }
 
     nextStage() {
-
         this.ActiveStageId = ++this.ActiveStageId % this.Stages.length;
 
         this.ActiveStage = this.Stages[this.ActiveStageId];

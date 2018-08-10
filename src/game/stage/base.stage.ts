@@ -10,7 +10,7 @@ export interface IBaseStage {
     
     
     setup();
-    update();
+    update(dt);
     
     // this.time += dt;
         // BaseStage.app.addChild();
