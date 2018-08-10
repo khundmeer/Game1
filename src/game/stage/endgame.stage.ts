@@ -42,11 +42,15 @@ export class Endgame implements IBaseStage {
         this.EndMessage.position.set((Game.AppWidth/3) -(this.EndMessage.width/2),0);
 
     }
-    update() { }
+    update(){
+
+    }
 
     // this.time += dt;
     // BaseStage.app.addChild();
 
-    clearStage() { }
+    clearStage() {
+        Game.app.stage.removeChild(this.EndMessage);
+     }
 
 }
