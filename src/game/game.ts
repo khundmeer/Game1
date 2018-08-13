@@ -19,6 +19,11 @@ export class Game {
 
     static CurrentScore: number = 0;
     static HighScore: number;
+
+    static CurScoreDisp : PIXI.Text;
+    static HighScoreDisp : PIXI.Text;
+
+
     static didWin: boolean;
     Stages: IBaseStage[];
     ActiveStage: IBaseStage;
@@ -49,6 +54,23 @@ export class Game {
         Game.app.renderer.autoResize = true;
 
         document.body.appendChild(Game.app.view);
+        
+        let ScoreStyle = new PIXI.TextStyle(
+            {
+              fontFamily: "Arial",
+              fontSize: 22,
+              fill: "white",
+              stroke: '#ffffff',
+              strokeThickness: .5,
+              dropShadow: false,
+              dropShadowColor: "#000000",
+              dropShadowBlur: 2,
+              dropShadowAngle: Math.PI / 6,
+              dropShadowDistance: 6,
+            });
+
+        Game.CurScoreDisp = new PIXI.Text("",ScoreStyle);
+        Game.CurScoreDisp.text = "Score: " + Game.CurScoreDisp;
         //Works
         this.addStages(); //adding all the GameStages
         //Somthing is wrong here
