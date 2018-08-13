@@ -48,7 +48,11 @@ export class PlayStage implements IBaseStage {
         }
 
         Game.app.stage.addChild(Game.CurScoreDisp);
-        Game.CurScoreDisp.position.set(50,50);
+        Game.CurScoreDisp.position.set(.10 * Game.AppWidth, .10 * Game.AppHeight);
+        
+        Game.app.stage.addChild(Game.HighScoreDisp);
+        Game.HighScoreDisp.position.set(Game.AppWidth - (.50 * Game.AppWidth), .10 * Game.AppHeight);
+        
         // var line = new PIXI.GraphicsData(Game.AppWidth,0xFFFFFF,2,0xFFFFFF,2,false,false,line,2);
         //     Game.app.stage.addChild(line);
 

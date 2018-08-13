@@ -18,7 +18,7 @@ export class Game {
     static AppHeight: number = 400;
 
     static CurrentScore: number = 0;
-    static HighScore: number;
+    static HighScore: number = 0;
 
     static CurScoreDisp : PIXI.Text;
     static HighScoreDisp : PIXI.Text;
@@ -71,6 +71,10 @@ export class Game {
 
         Game.CurScoreDisp = new PIXI.Text("",ScoreStyle);
         Game.CurScoreDisp.text = "Score: " + Game.CurScoreDisp;
+        
+        Game.HighScoreDisp = new PIXI.Text("",ScoreStyle);
+        Game.HighScoreDisp.text = "HighScore: " + Game.HighScoreDisp;
+        
         //Works
         this.addStages(); //adding all the GameStages
         //Somthing is wrong here
