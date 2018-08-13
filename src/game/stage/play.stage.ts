@@ -25,6 +25,11 @@ export class PlayStage implements IBaseStage {
     private roundDelayTimer: number = 0;
     static ScoreDisplay : Text;
     static HighScore : Text;
+    CurScoreDisp : PIXI.Text;
+    HighScoreDisp : PIXI.Text;
+
+
+    
     constructor(NumofRounds: number) {
         this.NumofRounds = NumofRounds;
     } 
@@ -32,6 +37,24 @@ export class PlayStage implements IBaseStage {
     setup() {
         this.player = new Player(Game.AppHeight/2);
         Game.app.stage.addChild(this.player.pixiObject);
+        
+        let ScoreStyle = new PIXI.TextStyle(
+            {
+              fontFamily: "Arial",
+              fontSize: 22,
+              fill: "white",
+              stroke: '#ffffff',
+              strokeThickness: .5,
+              dropShadow: false,
+              dropShadowColor: "#000000",
+              dropShadowBlur: 2,
+              dropShadowAngle: Math.PI / 6,
+              dropShadowDistance: 6,
+            });
+
+        this.CurScoreDisp = new PIXI.Text("",ScoreStyle);
+        
+        this.HighScoreDisp = new PIXI.Text("",ScoreStyle);
 
         var RandomNum = Math.floor(Math.random() * this.Frienemies.length);
         for (var i = 0; i < this.NumberOfEnemies; i++) {
@@ -47,11 +70,11 @@ export class PlayStage implements IBaseStage {
             Game.app.stage.addChild(this.Frienemies[i].pixiObject);
         }
 
-        Game.app.stage.addChild(Game.CurScoreDisp);
-        Game.CurScoreDisp.position.set(.10 * Game.AppWidth, .10 * Game.AppHeight);
+        Game.app.stage.addChild(this.CurScoreDisp);
+        this.CurScoreDisp.position.set(.10 * Game.AppWidth, .10 * Game.AppHeight);
         
-        Game.app.stage.addChild(Game.HighScoreDisp);
-        Game.HighScoreDisp.position.set(Game.AppWidth - (.50 * Game.AppWidth), .10 * Game.AppHeight);
+        Game.app.stage.addChild(this.HighScoreDisp);
+        this.HighScoreDisp.position.set(Game.AppWidth - (.50 * Game.AppWidth), .10 * Game.AppHeight);
         
         // var line = new PIXI.GraphicsData(Game.AppWidth,0xFFFFFF,2,0xFFFFFF,2,false,false,line,2);
         //     Game.app.stage.addChild(line);
@@ -63,6 +86,7 @@ export class PlayStage implements IBaseStage {
         var shouldRoundInit = true;
         var cur_obj: Frienemy;
         
+        this.CurScoreDisp.text = "Score: "  + Game.CurrentScore;
 
         this.player.update(dt);
         for (var i = 0; i < this.Frienemies.length; i++) {
@@ -73,6 +97,10 @@ export class PlayStage implements IBaseStage {
             {
                 cur_obj.isDestroyed = true;
                 Game.CurrentScore += cur_obj.value;
+                
+
+
+                console.log(Game.CurrentScore);
                 Game.app.stage.removeChild(cur_obj.pixiObject);
                 //rm
                 if(Game.CurrentScore<0)
@@ -156,5 +184,8 @@ export class PlayStage implements IBaseStage {
         this.isOver = false;
         this.Frienemies = [];
         this.CurrentRoundNum = 0;
+
+        Game.app.stage.removeChild(this.CurScoreDisp);
+        Game.app.stage.removeChild(this.HighScoreDisp);
     }
 }

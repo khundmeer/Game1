@@ -3,7 +3,7 @@ import * as PIXI from 'pixi.js'
 import { IBaseStage } from "./stage/base.stage";
 
 import { Mainmenu } from "./stage/mainmenu.stage";
-import {PlayStage} from './stage/play.stage'
+import { PlayStage } from './stage/play.stage'
 import { Endgame } from "./stage/endgame.stage";
 
 export class Game {
@@ -19,10 +19,6 @@ export class Game {
 
     static CurrentScore: number = 0;
     static HighScore: number = 0;
-
-    static CurScoreDisp : PIXI.Text;
-    static HighScoreDisp : PIXI.Text;
-
 
     static didWin: boolean;
     Stages: IBaseStage[];
@@ -54,27 +50,8 @@ export class Game {
         Game.app.renderer.autoResize = true;
 
         document.body.appendChild(Game.app.view);
-        
-        let ScoreStyle = new PIXI.TextStyle(
-            {
-              fontFamily: "Arial",
-              fontSize: 22,
-              fill: "white",
-              stroke: '#ffffff',
-              strokeThickness: .5,
-              dropShadow: false,
-              dropShadowColor: "#000000",
-              dropShadowBlur: 2,
-              dropShadowAngle: Math.PI / 6,
-              dropShadowDistance: 6,
-            });
 
-        Game.CurScoreDisp = new PIXI.Text("",ScoreStyle);
-        Game.CurScoreDisp.text = "Score: " + Game.CurScoreDisp;
-        
-        Game.HighScoreDisp = new PIXI.Text("",ScoreStyle);
-        Game.HighScoreDisp.text = "HighScore: " + Game.HighScoreDisp;
-        
+
         //Works
         this.addStages(); //adding all the GameStages
         //Somthing is wrong here
@@ -82,7 +59,7 @@ export class Game {
     }
 
     update(dt) {
-        
+
         if (!this.ActiveStage.isSetup) {
             this.ActiveStage.setup();
         }
