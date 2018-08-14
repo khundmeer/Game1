@@ -26,7 +26,7 @@ export class Game {
     ActiveStage: IBaseStage;
     ActiveStageId: number = 0;
 
-    NumberofRounds: number = 3;
+    NumberofRounds: number = 10;
 
     constructor() {
     }

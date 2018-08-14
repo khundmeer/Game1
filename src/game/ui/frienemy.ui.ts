@@ -23,10 +23,13 @@ export class Frienemy implements IGameObj {
     constructor (NumofRounds: number, yPos: number, CurrRoundNum: number, isEnemy:boolean) {
         
         
-        this.pixiObject = new Sprite();
+        var FrienemyTexture= isEnemy?
+            ImageLoader.texterById(ImageIds.Enemy) : 
+            ImageLoader.texterById(ImageIds.Friend);
+        this.pixiObject = new Sprite(FrienemyTexture);
         this.y = yPos;
         // this.pixiObject = new Graphics();
-        // this.PercentSpeedPerRound = this.MaxSpeed/NumofRounds;
+        this.PercentSpeedPerRound = this.MaxSpeed/NumofRounds;
 
         //Resolved: Note that here we need to access Game.AppWidth
 
@@ -54,6 +57,7 @@ export class Frienemy implements IGameObj {
     private positionReset() {
         this.x = Game.AppWidth + 10;
         this.pixiObject.x = this.x;
+        
     }
 
     private ChangeEnemyStatus(isEnemy: boolean) {
@@ -65,8 +69,8 @@ export class Frienemy implements IGameObj {
 
         this.pixiObject.texture = FrienemyTexture;
 
-        this.pixiObject.height = 33;
-        this.pixiObject.width = 33;
+        this.pixiObject.height = 40;
+        this.pixiObject.width = 40;
         //var color = isEnemy? 0xFF3300 : 0x66CCFF;//ternary operator    
 //??    
         // this.pixiObject.beginFill(color);

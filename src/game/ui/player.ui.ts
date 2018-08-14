@@ -19,13 +19,17 @@ export class Player implements IGameObj{
     right : Keyboard = new Keyboard(39);
     down : Keyboard = new Keyboard(38);
 
+    private topBound: number;
+    private lowBound: number;
     constructor(yPos: number)
     {
-        
-            this.pixiObject = new PIXI.Sprite(ImageLoader.texterById(ImageIds.Globie));
-            this.pixiObject.height = 25;
-            this.pixiObject.width = 25;
-            this.pixiObject.position.set(Game.AppWidth /2, yPos);
+        this.topBound = .10 * Game.AppHeight + 20;
+        this.pixiObject = new PIXI.Sprite(ImageLoader.texterById(ImageIds.Globie));
+        this.pixiObject.height = 25;
+        this.pixiObject.width = 25;
+        this.x = Game.AppWidth /2;
+        this.y = yPos;
+        this.lowBound = Game.AppHeight - this.pixiObject.width;    
 
     //     this.pixiObject = new Graphics();
     //     this.pixiObject.beginFill(0xFFFF00);
@@ -101,13 +105,22 @@ export class Player implements IGameObj{
             this.pixiObject.x = 0;
         }
         
-        if(this.pixiObject.y>=0 && (this.pixiObject.y + this.vy) >=0)
+        if(this.pixiObject.y>=this.topBound && (this.pixiObject.y + this.vy) >=this.topBound)
         {
             this.pixiObject.y += this.vy * dt;
         }
         else
         {
-             this.pixiObject.y = 0;
+             this.pixiObject.y = this.topBound;
+        }
+
+        if(this.pixiObject.y<=this.lowBound && (this.pixiObject.y + this.vy) <=this.lowBound)
+        {
+            this.pixiObject.y += this.vy * dt;
+        }
+        else
+        {
+             this.pixiObject.y = this.lowBound;
         }
     }
 }

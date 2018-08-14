@@ -17,7 +17,7 @@ export class PlayStage implements IBaseStage {
     player: Player;
     Frienemies: Frienemy[] = [];
 
-    private NumberOfEnemies = 8;
+    private NumberOfEnemies = 5;
     NumofRounds: number;
     CurrentRoundNum: number = 1;
     yPosOfFrienemies: number = 80;
@@ -87,6 +87,7 @@ export class PlayStage implements IBaseStage {
         var cur_obj: Frienemy;
         
         this.CurScoreDisp.text = "Score: "  + Game.CurrentScore;
+        this.HighScoreDisp.text = "High Score: "  + Game.HighScore;
 
         this.player.update(dt);
         for (var i = 0; i < this.Frienemies.length; i++) {

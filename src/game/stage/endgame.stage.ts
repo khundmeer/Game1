@@ -1,9 +1,10 @@
 import { IBaseStage } from './base.stage';
 import { Keyboard } from '../utilities/keyboard';
 import { CollisionDetect } from '../utilities/collision';
-import { Application } from 'pixi.js'
+import { Application, Sprite } from 'pixi.js'
 import { PlayStage } from './play.stage';
 import {Game} from '../game';
+import { ImageLoader, ImageIds } from '../utilities/image-loader';
 
 export class Endgame implements IBaseStage {
     time: number;
@@ -12,6 +13,7 @@ export class Endgame implements IBaseStage {
     EndMessage: PIXI.Text;
     PositionX : number;
     PositionY : number;
+    pixiObject : Sprite;
     constructor() {
 
     }
@@ -36,10 +38,25 @@ export class Endgame implements IBaseStage {
         if (Game.didWin)//PlayStage.didWin)
         {
             this.EndMessage.text = "Congratulations! Your Visa Has Been Approved";
+            this.pixiObject = new PIXI.Sprite(ImageLoader.texterById(ImageIds.Globie));
+            this.pixiObject.height = 100;
+            this.pixiObject.width = 100;
+            Game.app.stage.addChild(this.pixiObject);
+            this.pixiObject.x = Game.AppWidth/2 - this.pixiObject.width/2;
+            this.pixiObject.y = Game.AppHeight/2 - this.pixiObject.height/2;
+
         }
         else
         {
-            this.EndMessage.text = "We Are Sorry! Your Visa Has Been Denied";
+            this.EndMessage.text = "Sorry! Your Visa Has Been Denied!";
+            this.pixiObject = new PIXI.Sprite(ImageLoader.texterById(ImageIds.Enemy));
+            this.pixiObject.height = 100;
+            this.pixiObject.width = 100;
+
+            Game.app.stage.addChild(this.pixiObject);
+            this.pixiObject.x = Game.AppWidth/2 - this.pixiObject.width/2;
+            this.pixiObject.y = Game.AppHeight/2 - this.pixiObject.height/2;
+
         }
         this.EndMessage.position.set((Game.AppWidth/2) -(this.EndMessage.width/2),0);
         this.isSetup = true;
@@ -56,9 +73,16 @@ export class Endgame implements IBaseStage {
 
     clearStage() {
         Game.app.stage.removeChild(this.EndMessage);
+        Game.app.stage.removeChild(this.pixiObject);
         this.isSetup = false;
         this.isOver = false;
         Game.didWin = undefined;
+        
+
+        if(Game.CurrentScore > Game.HighScore){
+            Game.HighScore = Game.CurrentScore;
+        }
+
         Game.CurrentScore = 0;
      }
 

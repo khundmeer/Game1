@@ -35,6 +35,7 @@ export class ImageLoader {
     }
 
     static texterById(id: ImageIds) :Texture {
+        console.log("Get by Id", id, "Textures", ImageLoader.ImagePaths);
         return ImageLoader.ImagePaths.filter(t=> t.key == id)[0].texture;
 
     }
