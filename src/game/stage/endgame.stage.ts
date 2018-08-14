@@ -41,7 +41,7 @@ export class Endgame implements IBaseStage {
         {
             this.EndMessage.text = "We Are Sorry! Your Visa Has Been Denied";
         }
-        this.EndMessage.position.set((Game.AppWidth/3) -(this.EndMessage.width/2),0);
+        this.EndMessage.position.set((Game.AppWidth/2) -(this.EndMessage.width/2),0);
         this.isSetup = true;
 
         setTimeout(() => {

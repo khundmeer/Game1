@@ -1,7 +1,8 @@
 import {IGameObj} from './base.ui';
 import { Game } from '../game';
-import { Graphics } from "pixi.js";
+import { Graphics, Sprite } from "pixi.js";
 import {Keyboard} from '../utilities/keyboard'
+import { ImageLoader, ImageIds } from '../utilities/image-loader';
 
 export class Player implements IGameObj{
 
@@ -11,7 +12,7 @@ export class Player implements IGameObj{
     vy: number;
     value: number;
     isDestroyed: boolean;
-    pixiObject: Graphics;
+    pixiObject: PIXI.Sprite;
     Player_Speed: number = 4;
     left : Keyboard = new Keyboard(37);
     up : Keyboard = new Keyboard(40);
@@ -20,14 +21,20 @@ export class Player implements IGameObj{
 
     constructor(yPos: number)
     {
-        this.pixiObject = new Graphics();
-        this.pixiObject.beginFill(0xFFFF00);
-        this.pixiObject.lineStyle(4, 0x008000, 1);
-        this.pixiObject.drawRect(0, 0, 25, 25);
-      //rectangle.drawRect(   x    ,   y      , width, height);
-        this.pixiObject.endFill();
-        this.pixiObject.x = 0;
-        this.pixiObject.y = Game.AppHeight/2;
+        
+            this.pixiObject = new PIXI.Sprite(ImageLoader.texterById(ImageIds.Globie));
+            this.pixiObject.height = 25;
+            this.pixiObject.width = 25;
+            this.pixiObject.position.set(Game.AppWidth /2, yPos);
+
+    //     this.pixiObject = new Graphics();
+    //     this.pixiObject.beginFill(0xFFFF00);
+    //     this.pixiObject.lineStyle(4, 0x008000, 1);
+    //     this.pixiObject.drawRect(0, 0, 25, 25);
+    //   //rectangle.drawRect(   x    ,   y      , width, height);
+    //     this.pixiObject.endFill();
+    //     this.pixiObject.x = 0;
+    //     this.pixiObject.y = Game.AppHeight/2;
 
         //keyboard kys   
     

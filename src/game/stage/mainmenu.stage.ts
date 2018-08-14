@@ -82,7 +82,7 @@ export class Mainmenu implements IBaseStage {
         Game.app.stage.removeChild(this.GameMessage);
         Game.app.stage.removeChild(this.GameMessage1);
         Game.app.stage.removeChild(this.StartKeyMsg);
-
+        Game.app.stage.removeChild(this.Globie);
         this.isSetup = false;
         this.isOver = false;
     }
