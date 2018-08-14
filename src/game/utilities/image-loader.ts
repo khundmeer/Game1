@@ -13,7 +13,7 @@ export class ImageLoader {
     private static ImagePaths: any[] = [
         { key: ImageIds.Globie, path: 'assets/images/CharGlobie.png', texture: null },
         { key: ImageIds.Friend, path: 'assets/images/Friend.png', texture: null},
-        { key: ImageIds.Enemy, path: 'assets/images/Trump.png', texture: null}];
+        { key: ImageIds.Enemy, path: 'assets/images/Goblin.png', texture: null}];
 
     static load(callback: Function) {
         var loader = PIXI.loader;
