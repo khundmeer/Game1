@@ -59,6 +59,7 @@ export class Endgame implements IBaseStage {
         this.isSetup = false;
         this.isOver = false;
         Game.didWin = undefined;
+        Game.CurrentScore = 0;
      }
 
 }

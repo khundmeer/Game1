@@ -155,6 +155,6 @@ export class PlayStage implements IBaseStage {
         this.isSetup = false;
         this.isOver = false;
         this.Frienemies = [];
-        this.CurrentRoundNum = 0;
+        this.CurrentRoundNum = 1;
     }
 }

@@ -5,6 +5,7 @@ import { IBaseStage } from "./stage/base.stage";
 import { Mainmenu } from "./stage/mainmenu.stage";
 import {PlayStage} from './stage/play.stage'
 import { Endgame } from "./stage/endgame.stage";
+import { ImageLoader, ImageIds } from "./utilities/image-loader";
 
 export class Game {
 
@@ -77,6 +78,7 @@ export class Game {
         
         //Works
         this.addStages(); //adding all the GameStages
+
         //Somthing is wrong here
         Game.app.ticker.add(delta => this.update(delta));
     }

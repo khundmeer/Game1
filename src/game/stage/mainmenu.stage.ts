@@ -3,6 +3,7 @@ import { Keyboard } from '../utilities/keyboard';
 import { CollisionDetect } from '../utilities/collision';
 import * as PIXI from 'pixi.js'
 import { Game } from '../game'
+import { ImageLoader, ImageIds } from '../utilities/image-loader';
 
 export class Mainmenu implements IBaseStage {
 
@@ -12,6 +13,8 @@ export class Mainmenu implements IBaseStage {
     GameMessage : PIXI.Text;
     GameMessage1;
     StartKeyMsg;
+    Globie: PIXI.Sprite;
+    Texture = PIXI.utils;
 
     setup() {
 
@@ -36,6 +39,14 @@ export class Mainmenu implements IBaseStage {
                 dropShadowDistance: 6,
             });
 
+        this.Globie = new PIXI.Sprite(ImageLoader.texterById(ImageIds.Globie));
+        
+        this.Globie.height = 80;
+        this.Globie.width = 80;
+        
+
+        Game.app.stage.addChild(this.Globie);
+
         this.GameMessage = new PIXI.Text("Globie", style);
         this.GameMessage1 = new PIXI.Text("The Great Traveler", style);
         this.StartKeyMsg = new PIXI.Text("Press 's' to start the Game", style);
@@ -47,8 +58,6 @@ export class Mainmenu implements IBaseStage {
         this.GameMessage.position.set(Game.AppWidth/2 - this.GameMessage.width/2, 0);
         this.GameMessage1.position.set(Game.AppWidth/2 - this.GameMessage1.width/2, 90);
         this.StartKeyMsg.position.set(Game.AppWidth/2 - this.StartKeyMsg.width/2, 180);
-
-
 
 
 
