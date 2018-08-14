@@ -1,6 +1,7 @@
 import { IGameObj } from './base.ui';
-import { Graphics } from 'pixi.js';
+import { Graphics, Sprite } from 'pixi.js';
 import { Game } from '../game'
+import { ImageLoader, ImageIds } from '../utilities/image-loader';
 
 export class Frienemy implements IGameObj {
 
@@ -17,16 +18,19 @@ export class Frienemy implements IGameObj {
 
     isDestroyed: boolean;
     isEnemy: boolean;
-    pixiObject: Graphics;
+    pixiObject: Sprite;
 
     constructor (NumofRounds: number, yPos: number, CurrRoundNum: number, isEnemy:boolean) {
-
-        this.pixiObject = new Graphics();
-        this.PercentSpeedPerRound = this.MaxSpeed/NumofRounds;
+        
+        
+        this.pixiObject = new Sprite();
+        this.y = yPos;
+        // this.pixiObject = new Graphics();
+        // this.PercentSpeedPerRound = this.MaxSpeed/NumofRounds;
 
         //Resolved: Note that here we need to access Game.AppWidth
 
-        this.y = yPos;
+        // this.y = yPos;
         this.RoundInit(CurrRoundNum, isEnemy);
     }
     update(dt) {
@@ -55,12 +59,20 @@ export class Frienemy implements IGameObj {
     private ChangeEnemyStatus(isEnemy: boolean) {
 
         this.value = isEnemy? -5 : 10;
-        var color = isEnemy? 0xFF3300 : 0x66CCFF;//ternary operator    
+        var FrienemyTexture= isEnemy?
+            ImageLoader.texterById(ImageIds.Enemy) : 
+            ImageLoader.texterById(ImageIds.Friend);
+
+        this.pixiObject.texture = FrienemyTexture;
+
+        this.pixiObject.height = 33;
+        this.pixiObject.width = 33;
+        //var color = isEnemy? 0xFF3300 : 0x66CCFF;//ternary operator    
 //??    
-        this.pixiObject.beginFill(color);
-        this.pixiObject.lineStyle(4, color, 1);
-        this.pixiObject.drawRect(0, 0, 33, 33);
-        this.pixiObject.endFill();
+        // this.pixiObject.beginFill(color);
+        // this.pixiObject.lineStyle(4, color, 1);
+        // this.pixiObject.drawRect(0, 0, 33, 33);
+        // this.pixiObject.endFill();
     }
 //Need to do Change Speed
     private ChangeSpeed(CurrRoundNum: number) {
